@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Android-OTLanguageIDE</string>
+    <string name="put_code">코드 입력</string>
 </resources>
