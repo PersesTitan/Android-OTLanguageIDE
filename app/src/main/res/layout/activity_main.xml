@@ -9,11 +9,39 @@
     tools:context=".MainActivity">
 
     <LinearLayout
+        android:padding="8dp"
+        android:background="@color/black"
         android:layout_weight="1"
         android:gravity="center"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/save"
+            android:tint="@color/white_100"
+            android:src="@drawable/ic_baseline_save_24"
+            android:background="@color/no_color"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/upload"
+            android:layout_marginStart="16dp"
+            android:tint="@color/white_100"
+            android:src="@drawable/ic_baseline_file_upload_24"
+            android:background="@color/no_color"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/download"
+            android:layout_marginStart="16dp"
+            android:tint="@color/white_100"
+            android:src="@drawable/ic_baseline_get_app_24"
+            android:background="@color/no_color"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
         <View
             android:layout_weight="1"
@@ -21,7 +49,7 @@
             android:layout_width="0dp"
             tools:ignore="NestedWeights" />
 
-        <ImageButton
+        <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/play"
             android:background="@color/no_color"
             android:layout_width="wrap_content"
@@ -29,7 +57,7 @@
             android:src="@drawable/ic_baseline_play_arrow_24"
             app:tint="@color/green" />
 
-        <ImageButton
+        <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/stop"
             android:visibility="gone"
             android:background="@color/no_color"
@@ -40,22 +68,45 @@
     </LinearLayout>
 
     <ScrollView
+        android:background="@color/blue_black"
         android:layout_weight="10"
         android:layout_width="match_parent"
         android:layout_height="0dp">
 
         <TextView
+            android:id="@+id/result"
+            android:padding="8dp"
+            android:textColorHint="@color/white_100"
+            android:textColor="@color/white"
+            android:hint="@string/output_window"
             android:layout_width="match_parent"
-            android:layout_height="0dp"/>
+            android:layout_height="wrap_content"/>
+    </ScrollView>
+
+    <ScrollView
+        android:id="@+id/inputLayout"
+        android:background="@color/blue_black"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/input"
+            android:visibility="gone"
+            android:padding="8dp"
+            android:textColorHint="@color/white_100"
+            android:textColor="@color/white"
+            android:hint="@string/input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
     </ScrollView>
 
     <EditText
+        android:id="@+id/content"
         android:padding="16dp"
         android:gravity="top"
         android:hint="@string/put_code"
         android:background="@color/gray"
         android:layout_weight="100"
-        android:id="@+id/content"
         android:layout_width="match_parent"
         android:layout_height="0dp"/>
 

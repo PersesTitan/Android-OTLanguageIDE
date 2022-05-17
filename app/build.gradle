@@ -32,6 +32,8 @@ android {
 }
 
 dependencies {
+    implementation 'com.pranavpandey.android:dynamic-toasts:4.1.0'
+    annotationProcessor 'org.projectlombok:lombok:1.18.24'
     implementation 'androidx.appcompat:appcompat:1.4.1'
     implementation 'com.google.android.material:material:1.6.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.3'

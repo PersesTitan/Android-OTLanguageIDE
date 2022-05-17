@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">Android-OTLanguageIDE</string>
     <string name="put_code">코드 입력</string>
+    <string name="output_window">출력창</string>
+    <string name="input">입력창</string>
 </resources>
