@@ -1,13 +1,20 @@
 package com.example.android_otlanguageide;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.android_otlanguageide.databinding.ActivityMainBinding;
@@ -16,6 +23,14 @@ import com.example.android_otlanguageide.setting.Setting;
 import com.example.android_otlanguageide.setting.TextSetting;
 import com.pranavpandey.android.dynamic.toasts.DynamicToast;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.TimerTask;
 
@@ -26,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
     private final String CONTENT = "CONTENT";
     final String shared = "file";
+    StringBuilder stringBuilder;
     ActivityMainBinding binding;
     String total;
 
@@ -72,6 +88,45 @@ public class MainActivity extends AppCompatActivity {
                     DynamicToast.makeSuccess(this, "값을 불러왔습니다", Toast.LENGTH_SHORT);
                     break;
 
+                case R.id.loadFile:
+                    File fileName = getFileStreamPath("Android");
+                    Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                    Uri uri = Uri.parse(fileName.getPath());
+                    intent.setDataAndType(uri, "TEXT/*");
+                    startActivity(Intent.createChooser(intent,"Open"));
+                    break;
+
+                case R.id.downloadFile:
+                    EditText editText = new EditText(this);
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.MATCH_PARENT);
+                    params.setMarginStart(200);
+                    params.setMarginEnd(200);
+                    editText.setLayoutParams(params);
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+                    dialog.setTitle("파일 이름을 입력해주세요");
+                    dialog.setView(editText);
+                    dialog.setPositiveButton("확인", (dialogInterface, i) -> {
+                        stringBuilder = new StringBuilder(setting.getText(editText));
+                        stringBuilder.append(".otl");
+//                        File file = new File(stringBuilder.toString());
+//                        System.out.println(file.getPath());
+//                        if (!file.exists()) {
+//                            try (FileOutputStream fos = new FileOutputStream(stringBuilder.toString())) {
+//                                fos.write(setting.getText(binding.content).getBytes(StandardCharsets.UTF_8));
+//                                fos.flush();
+//                            } catch (IOException ignored) { }
+//                        }
+                        try (FileOutputStream fOut = new FileOutputStream(stringBuilder.toString())) {
+                            OutputStreamWriter osw = new OutputStreamWriter(fOut);
+                            osw.write(setting.getText(binding.content));
+                            osw.flush();
+                        } catch (IOException ignored) { }
+                    }).setNegativeButton("취소", (dialogInterface, i) -> { });
+                    dialog.show();
+                    break;
+
                 default:
                     assert false;
                     break;
@@ -82,6 +137,8 @@ public class MainActivity extends AppCompatActivity {
         binding.stop.setOnClickListener(listener);
         binding.thisSave.setOnClickListener(listener);
         binding.thisLoad.setOnClickListener(listener);
+        binding.loadFile.setOnClickListener(listener);
+        binding.downloadFile.setOnClickListener(listener);
 
     }
 
