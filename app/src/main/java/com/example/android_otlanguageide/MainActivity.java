@@ -24,8 +24,8 @@ public class MainActivity extends AppCompatActivity {
     private final Setting setting = new Setting();
     private final TextSetting textSetting = new TextSetting();
 
-    String shared = "file";
-    String CONTENT = "CONTENT";
+    private final String CONTENT = "CONTENT";
+    final String shared = "file";
     ActivityMainBinding binding;
     String total;
 
@@ -58,20 +58,19 @@ public class MainActivity extends AppCompatActivity {
                     binding.inputLayout.setVisibility(View.GONE);
                     break;
 
-                case R.id.save:
+                case R.id.thisSave:
                     total = setting.getText(binding.content);
                     editor.putString(CONTENT, total);
                     if (editor.commit()) DynamicToast.makeSuccess(this, "저장되었습니다", Toast.LENGTH_SHORT).show();
                     else DynamicToast.makeError(this, "오류가 발생하였습니다.", Toast.LENGTH_SHORT).show();
                     break;
 
-                case R.id.download:
+                case R.id.thisLoad:
+                    total = sharedPreferences.getString(CONTENT, null);
+
 
                     break;
 
-                case R.id.upload:
-
-                    break;
 
                 default:
                     assert false;
@@ -81,9 +80,8 @@ public class MainActivity extends AppCompatActivity {
 
         binding.play.setOnClickListener(listener);
         binding.stop.setOnClickListener(listener);
-        binding.save.setOnClickListener(listener);
-        binding.upload.setOnClickListener(listener);
-        binding.download.setOnClickListener(listener);
+        binding.thisSave.setOnClickListener(listener);
+        binding.thisLoad.setOnClickListener(listener);
 
     }
 
@@ -96,22 +94,26 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void afterTextChanged(Editable editable) {
-            runOnUiThread(() -> {
-                binding.content.removeTextChangedListener(textWatcher);
-                new Thread(() -> {
-                    try {
-                        Thread.sleep(1000);
-                        int position = binding.content.getSelectionStart();
-                        String total = setting.getText(binding.content);
-                        List<ItemPosition> list = textSetting.getList(total);
-                        binding.content.setText(textSetting.setTotalSpan(total, list));
-                        binding.content.addTextChangedListener(textWatcher);
-                        binding.content.setSelection(position);
-                    } catch (InterruptedException e) {
-                        binding.content.addTextChangedListener(textWatcher);
-                    }
-                }).start();
-            });
+            if (!setting.getText(binding.content).isEmpty()) tread();
         }
     };
+
+    private void tread() {
+        runOnUiThread(() -> {
+            binding.content.removeTextChangedListener(textWatcher);
+            new Thread(() -> {
+                try {
+                    Thread.sleep(1000);
+                    int position = binding.content.getSelectionStart();
+                    String total = setting.getText(binding.content);
+                    List<ItemPosition> list = textSetting.getList(total);
+                    binding.content.setText(textSetting.setTotalSpan(total, list));
+                    binding.content.addTextChangedListener(textWatcher);
+                    binding.content.setSelection(position);
+                } catch (InterruptedException e) {
+                    binding.content.addTextChangedListener(textWatcher);
+                }
+            }).start();
+        });
+    }
 }
