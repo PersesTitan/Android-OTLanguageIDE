@@ -1,5 +1,6 @@
 package com.example.android_otlanguageide;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -89,11 +90,11 @@ public class MainActivity extends AppCompatActivity {
                     break;
 
                 case R.id.loadFile:
-                    File fileName = getFileStreamPath("Android");
+                    File dir = new File(Environment.getExternalStorageDirectory(), "OTLanguage");
+                    Uri uri = Uri.parse(dir.toString());
                     Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                    Uri uri = Uri.parse(fileName.getPath());
-                    intent.setDataAndType(uri, "TEXT/*");
-                    startActivity(Intent.createChooser(intent,"Open"));
+                    intent.setDataAndType(uri, "*/*");
+                    startActivity(Intent.createChooser(intent, "Open"));
                     break;
 
                 case R.id.downloadFile:
@@ -110,19 +111,7 @@ public class MainActivity extends AppCompatActivity {
                     dialog.setPositiveButton("확인", (dialogInterface, i) -> {
                         stringBuilder = new StringBuilder(setting.getText(editText));
                         stringBuilder.append(".otl");
-//                        File file = new File(stringBuilder.toString());
-//                        System.out.println(file.getPath());
-//                        if (!file.exists()) {
-//                            try (FileOutputStream fos = new FileOutputStream(stringBuilder.toString())) {
-//                                fos.write(setting.getText(binding.content).getBytes(StandardCharsets.UTF_8));
-//                                fos.flush();
-//                            } catch (IOException ignored) { }
-//                        }
-                        try (FileOutputStream fOut = new FileOutputStream(stringBuilder.toString())) {
-                            OutputStreamWriter osw = new OutputStreamWriter(fOut);
-                            osw.write(setting.getText(binding.content));
-                            osw.flush();
-                        } catch (IOException ignored) { }
+                        createFile(stringBuilder.toString(), setting.getText(binding.content));
                     }).setNegativeButton("취소", (dialogInterface, i) -> { });
                     dialog.show();
                     break;
@@ -140,6 +129,30 @@ public class MainActivity extends AppCompatActivity {
         binding.loadFile.setOnClickListener(listener);
         binding.downloadFile.setOnClickListener(listener);
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        System.out.println("==================");
+        assert data != null;
+        Uri uri = data.getData();
+        String path = uri.getPath();
+        System.out.println(path);
+        System.out.println(uri);
+    }
+
+    private void createFile(String fileName, String total) {
+        String state = Environment.getExternalStorageState();
+        if (state.equals(Environment.MEDIA_MOUNTED)) {
+            File dir = new File(Environment.getExternalStorageDirectory(), "OTLanguage");
+            if (!dir.exists()) Toast.makeText(this, dir.mkdir()?"파일이 생성되었습니다.":"파일 생성에 실패하였습니다." , Toast.LENGTH_SHORT).show();
+            File file = new File(dir, fileName);
+            try (FileOutputStream fos = new FileOutputStream(file)) {
+                fos.write(total.getBytes(StandardCharsets.UTF_8));
+            } catch (IOException ignored) { }
+        } else Toast.makeText(this, "권한 허용을 해주세요.", Toast.LENGTH_SHORT).show();
     }
 
     private final TextWatcher textWatcher = new TextWatcher() {
