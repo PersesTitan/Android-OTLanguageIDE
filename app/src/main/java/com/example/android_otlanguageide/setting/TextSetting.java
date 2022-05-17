@@ -16,16 +16,26 @@ public class TextSetting {
     private final String print = "ㅅㅁㅅ";
     private final String println = "ㅆㅁㅆ";
     private final String scanner = "ㅅㅇㅅ";
-    private final String blueColor = "#039BE5";
+    private final String Color1 = "#7CB342"; //초록색
+    private final String Color2 = "#039BE5"; //파란색
+    private final String Color3 = "#774AD1"; //연보라
 
     public SpannableStringBuilder setTotalSpan(String total, List<ItemPosition> lists) {
         SpannableStringBuilder spannable = new SpannableStringBuilder(total);
         for (ItemPosition list : lists) {
-            spannable.setSpan(
-                    new ForegroundColorSpan(Color.parseColor(blueColor)),
-                    list.getStart(), list.getEnd(),
-                    Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-        } return spannable;
+            spannable.setSpan(new ForegroundColorSpan(Color.parseColor(Color1)),
+                    list.getStart(), list.getEnd(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        }
+
+        return spannable;
+    }    public SpannableStringBuilder setTotalSpan(List<ItemPosition> lists, String total) {
+        SpannableStringBuilder spannable = new SpannableStringBuilder(total);
+        for (ItemPosition list : lists) {
+            spannable.setSpan(new ForegroundColorSpan(Color.parseColor(Color1)),
+                    list.getStart(), list.getEnd(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        }
+
+        return spannable;
     }
 
     public List<ItemPosition> getList(String total) {

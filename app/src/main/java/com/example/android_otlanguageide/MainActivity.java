@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
         binding.play.setVisibility(View.VISIBLE);
         binding.stop.setVisibility(View.GONE);
         binding.inputLayout.setVisibility(View.GONE);
+        binding.content.setText(null);
 
         View.OnClickListener listener = view -> {
             switch (view.getId()) {
@@ -67,10 +68,9 @@ public class MainActivity extends AppCompatActivity {
 
                 case R.id.thisLoad:
                     total = sharedPreferences.getString(CONTENT, null);
-
-
+                    binding.content.setText(total);
+                    DynamicToast.makeSuccess(this, "값을 불러왔습니다", Toast.LENGTH_SHORT);
                     break;
-
 
                 default:
                     assert false;

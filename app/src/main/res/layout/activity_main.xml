@@ -112,6 +112,7 @@
 
     <EditText
         android:id="@+id/content"
+        android:textColor="@color/black"
         android:padding="16dp"
         android:gravity="top"
         android:hint="@string/put_code"
