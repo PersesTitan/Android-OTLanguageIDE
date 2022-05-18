@@ -24,10 +24,13 @@ import com.example.android_otlanguageide.setting.TextSetting;
 import com.pranavpandey.android.dynamic.toasts.DynamicToast;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -84,11 +87,12 @@ public class MainActivity extends AppCompatActivity {
                     break;
 
                 case R.id.loadFile:
-                    File dir = new File(Environment.getExternalStorageDirectory(), "OTLanguage");
-                    Uri uri = Uri.parse(dir.toString());
-                    Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                    intent.setDataAndType(uri, "*/*");
-                    startActivity(Intent.createChooser(intent, "Open"));
+
+//                    File dir = new File(Environment.getExternalStorageDirectory(), "OTLanguage");
+//                    Uri uri = Uri.parse(dir.toString());
+//                    Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+//                    intent.setDataAndType(uri, "*/*");
+//                    startActivity(Intent.createChooser(intent, "Open"));
                     break;
 
                 case R.id.downloadFile:
@@ -100,7 +104,8 @@ public class MainActivity extends AppCompatActivity {
                     params.setMarginEnd(200);
                     editText.setLayoutParams(params);
                     AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-                    dialog.setTitle("파일 이름을 입력해주세요");
+                    dialog.setTitle("내보내기");
+                    dialog.setMessage("파일 이름을 입력해주세요");
                     dialog.setView(editText);
                     dialog.setPositiveButton("확인", (dialogInterface, i) -> {
                         stringBuilder = new StringBuilder(setting.getText(editText));
@@ -137,6 +142,11 @@ public class MainActivity extends AppCompatActivity {
         System.out.println(uri);
     }
 
+    private void readFile() {
+        File dir = new File(Environment.getExternalStorageDirectory(), "OTLanguage");
+        File[] files = dir.listFiles(pathname -> pathname.getName().toLowerCase(Locale.ROOT).endsWith(".otl"));
+    }
+
     private void createFile(String fileName, String total) {
         String state = Environment.getExternalStorageState();
         if (state.equals(Environment.MEDIA_MOUNTED)) {
@@ -146,7 +156,8 @@ public class MainActivity extends AppCompatActivity {
             try (FileOutputStream fos = new FileOutputStream(file)) {
                 fos.write(total.getBytes(StandardCharsets.UTF_8));
             } catch (IOException ignored) { }
-        } else Toast.makeText(this, "권한 허용을 해주세요.", Toast.LENGTH_SHORT).show();
+            DynamicToast.makeSuccess(this, "파일이 생성되었습니다.", Toast.LENGTH_SHORT).show();
+        } else DynamicToast.makeWarning(this, "권한 허용을 해주세요.", Toast.LENGTH_SHORT).show();
     }
 
     private final TextWatcher textWatcher = new TextWatcher() {
@@ -154,13 +165,7 @@ public class MainActivity extends AppCompatActivity {
         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
 
         @Override
-        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//            boolean bool = !setting.getText(binding.content).isEmpty();
-////            if (textSetting.chek(i, i1)!=null) {
-////
-////            }
-//            if (bool) tread();
-        }
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
 
         @Override
         public void afterTextChanged(Editable editable) {
@@ -169,24 +174,19 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    private void tread() {
-
-        textSetting.setTotalSpan(total);
-
-        runOnUiThread(() -> {
-            binding.content.removeTextChangedListener(textWatcher);
-            new Thread(() -> {
-                try {
-                    Thread.sleep(1000);
-//                    int position = binding.content.getSelectionStart();
-//                    String total = setting.getText(binding.content);
-//                    binding.content.setText(textSetting.setTotalSpan(total));
-//                    binding.content.addTextChangedListener(textWatcher);
-//                    binding.content.setSelection(position);
-                } catch (InterruptedException e) {
-                    binding.content.addTextChangedListener(textWatcher);
+    private List<String> extensionFilter(File folder) {
+        List<String> result = new ArrayList<>();
+        File[] files = folder.listFiles();
+        if (files != null) {
+            for (File file : files) {
+                if (file.isDirectory()) result.addAll(extensionFilter(file));
+                else {
+                    if (".otl".contains(file.getName().substring(file.getName()
+                            .lastIndexOf(".")).toLowerCase(Locale.ROOT))) {
+                        result.add(file.toString());
+                    }
                 }
-            }).start();
-        });
+            }
+        } return result;
     }
 }
