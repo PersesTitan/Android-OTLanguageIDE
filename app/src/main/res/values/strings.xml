@@ -3,4 +3,28 @@
     <string name="put_code">코드 입력</string>
     <string name="output_window">출력창</string>
     <string name="input">입력창</string>
+
+    <string-array name="array">
+        <item>ㅅㅁㅅ</item>
+        <item>ㅆㅁㅆ</item>
+        <item>ㅅㅇㅅ</item>
+        <item>ㅇㅈㅇ</item>
+        <item>ㅇㅉㅇ</item>
+        <item>ㅇㅂㅇ</item>
+        <item>ㅇㅁㅇ</item>
+        <item>ㅇㄱㅇ</item>
+        <item>ㅇㅅㅇ</item>
+        <item>ㅇㅆㅇ</item>
+        <item>ㅇㅇ</item>
+        <item>ㄴㄴ</item>
+        <item>ㄸ</item>
+        <item>ㄲ</item>
+        <item>^^</item>
+        <item>\?ㅅ?</item>
+        <item>ㅇ+ㅇ</item>
+        <item>ㅇ-ㅇ</item>
+        <item>ㅇ/ㅇ</item>
+        <item>ㅇ*ㅇ</item>
+        <item>ㅇ%ㅇ</item>
+    </string-array>
 </resources>

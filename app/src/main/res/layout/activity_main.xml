@@ -93,26 +93,30 @@
             android:layout_height="wrap_content"/>
     </ScrollView>
 
-    <ScrollView
-        android:id="@+id/inputLayout"
-        android:background="@color/blue_black"
+    <View
+        android:background="@color/black"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="1dp"/>
 
-        <EditText
-            android:id="@+id/input"
-            android:visibility="gone"
-            android:padding="8dp"
-            android:textColorHint="@color/white_100"
-            android:textColor="@color/white"
-            android:hint="@string/input"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-    </ScrollView>
+    <EditText
+        android:id="@+id/input"
+        android:inputType="textCapSentences|textAutoCorrect"
+        android:singleLine="true"
+        android:maxLines="1"
+        android:visibility="visible"
+        android:padding="8dp"
+        android:textColorHint="@color/white_100"
+        android:textColor="@color/white"
+        android:background="@color/blue_black"
+        android:hint="@string/input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <EditText
         android:id="@+id/content"
+        android:scrollHorizontally="true"
         android:textColor="@color/black"
+        android:textColorHint="@color/grey"
         android:padding="16dp"
         android:gravity="top"
         android:hint="@string/put_code"

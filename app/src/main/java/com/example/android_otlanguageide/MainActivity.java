@@ -1,14 +1,12 @@
 package com.example.android_otlanguageide;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.text.Editable;
@@ -26,8 +24,10 @@ import com.example.android_otlanguageide.setting.Setting;
 import com.example.android_otlanguageide.setting.TextSetting;
 import com.pranavpandey.android.dynamic.toasts.DynamicToast;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
 
     private final String CONTENT = "CONTENT";
     final String shared = "file";
+    StringBuilder totalStringBuilder;
     StringBuilder stringBuilder;
     ActivityMainBinding binding;
     String total;
@@ -59,11 +60,10 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences(shared, 0);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         setColorSpan();
-//        binding.content.addTextChangedListener(textWatcher);
 
         binding.play.setVisibility(View.VISIBLE);
         binding.stop.setVisibility(View.GONE);
-        binding.inputLayout.setVisibility(View.GONE);
+        binding.input.setVisibility(View.GONE);
         binding.content.setText(null);
 
         View.OnClickListener listener = view -> {
@@ -75,28 +75,27 @@ public class MainActivity extends AppCompatActivity {
                     break;
 
                 case R.id.stop:
-                    binding.play.setVisibility(View.VISIBLE);
-                    binding.stop.setVisibility(View.GONE);
-                    binding.inputLayout.setVisibility(View.GONE);
+                    stop();
                     break;
 
                 case R.id.thisSave:
                     total = setting.getText(binding.content);
                     editor.putString(CONTENT, total);
-                    if (editor.commit()) DynamicToast.makeSuccess(this, "저장되었습니다", Toast.LENGTH_SHORT).show();
-                    else DynamicToast.makeError(this, "오류가 발생하였습니다.", Toast.LENGTH_SHORT).show();
+                    if (editor.commit()) okToast("저장되었습니다");
+                    else errorToast("오류가 발생하였습니다.");
                     break;
 
                 case R.id.thisLoad:
                     total = sharedPreferences.getString(CONTENT, null);
                     binding.content.setText(total);
-                    DynamicToast.makeSuccess(this, "값을 불러왔습니다", Toast.LENGTH_SHORT);
+                    okToast("값을 불러왔습니다");
                     break;
 
                 case R.id.loadFile:
                     File dir = new File(Environment.getExternalStorageDirectory(), "OTLanguage");
-                    System.out.println(extensionFilter(dir));
-                    readFile();
+                    List<String> listFiles = extensionFilter(dir);
+                    readFiles(listFiles);
+
                     break;
 
                 case R.id.downloadFile:
@@ -131,13 +130,12 @@ public class MainActivity extends AppCompatActivity {
         binding.thisLoad.setOnClickListener(listener);
         binding.loadFile.setOnClickListener(listener);
         binding.downloadFile.setOnClickListener(listener);
-
     }
 
-    private void readFile() {
-        File dir = new File(Environment.getExternalStorageDirectory(), "OTLanguage");
-        File[] files = dir.listFiles(pathname -> pathname.getName().toLowerCase(Locale.ROOT).endsWith(".otl"));
-        System.out.println(files);
+    private void stop() {
+        binding.play.setVisibility(View.VISIBLE);
+        binding.stop.setVisibility(View.GONE);
+        binding.input.setVisibility(View.GONE);
     }
 
     private List<String> extensionFilter(File folder) {
@@ -156,6 +154,32 @@ public class MainActivity extends AppCompatActivity {
         } return result;
     }
 
+
+    private void readFiles(List<String> list) {
+        totalStringBuilder = new StringBuilder();
+        var size = list.size();
+        String[] items = list.toArray(new String[size]);
+        var builder = new AlertDialog.Builder(this);
+        builder.setTitle("파일을 선택해주세요.");
+        builder.setItems(items, (dialogInterface, i) -> {
+            String path = list.get(i);
+            var file = new File(path);
+            if (!file.canRead()) errorToast("파일을 읽을 수 없습니다.");
+            else if (!path.toLowerCase(Locale.ROOT).endsWith(".otl"))
+                errorToast("확장자가 일치하지 않습니다.");
+            else {
+                try (var buffer = new FileReader(file)) {
+                    var fileReader = new BufferedReader(buffer);
+                    String line;
+                    while ((line = fileReader.readLine()) != null)
+                        totalStringBuilder.append(line).append("\n");
+                } catch (IOException ignored) { }
+            }
+        });
+        var alertDialog = builder.create();
+        alertDialog.show();
+    }
+
     /**
      * @param fileName 파일 이름
      * @param total 모든 파일 텍스트
@@ -164,15 +188,15 @@ public class MainActivity extends AppCompatActivity {
         String state = Environment.getExternalStorageState();
         if (state.equals(Environment.MEDIA_MOUNTED)) {
             File dir = new File(Environment.getExternalStorageDirectory(), "OTLanguage");
-            if (!dir.exists() && dir.mkdir()) {
-                Toast.makeText(this, "파일이 생성되었습니다.", Toast.LENGTH_SHORT).show();
-                File file = new File(dir, fileName);
-                try (FileOutputStream fos = new FileOutputStream(file)) {
-                    fos.write(total.getBytes(StandardCharsets.UTF_8));
-                } catch (IOException ignored) { }
-                DynamicToast.makeSuccess(this, "파일이 생성되었습니다.", Toast.LENGTH_SHORT).show();
-            } else DynamicToast.makeError(this, "파일 생성에 실패하였습니다.", Toast.LENGTH_SHORT).show();
-        } else DynamicToast.makeWarning(this, "권한 허용을 해주세요.", Toast.LENGTH_SHORT).show();
+            if (!dir.exists()) {
+                if (dir.mkdir()) okToast("파일이 생성되었습니다.");
+                else errorToast("파일 생성에 실패하였습니다.");
+            }
+            File file = new File(dir, fileName);
+            try (FileOutputStream fos = new FileOutputStream(file)) {
+                fos.write(total.getBytes(StandardCharsets.UTF_8));
+            } catch (IOException ignored) { }
+        } else noToast("권한 허용을 해주세요.");
     }
 
     /**
@@ -218,5 +242,17 @@ public class MainActivity extends AppCompatActivity {
                 final int color;
             }
         });
+    }
+
+    private void errorToast(String message) {
+        DynamicToast.makeError(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    private void okToast(String message) {
+        DynamicToast.makeSuccess(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    private void noToast(String message) {
+        DynamicToast.makeSuccess(this, message, Toast.LENGTH_SHORT).show();
     }
 }
