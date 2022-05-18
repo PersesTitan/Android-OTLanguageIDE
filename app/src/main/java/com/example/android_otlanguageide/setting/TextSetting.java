@@ -16,30 +16,30 @@ public class TextSetting implements ListInf {
     private final List<ItemPosition> listBool = new ArrayList<>();
     private final List<ItemPosition> listVarType = new ArrayList<>();
 
-    private final ForegroundColorSpan colorPrint
-            = new ForegroundColorSpan(Color.parseColor(printColor));
-    private final ForegroundColorSpan colorBool
-            = new ForegroundColorSpan(Color.parseColor(boolColor));
-    private final ForegroundColorSpan colorVar
-            = new ForegroundColorSpan(Color.parseColor(varColor));
+//    private final ForegroundColorSpan colorPrint
+//            = new ForegroundColorSpan(Color.parseColor(printColor));
+//    private final ForegroundColorSpan colorBool
+//            = new ForegroundColorSpan(Color.parseColor(boolColor));
+//    private final ForegroundColorSpan colorVar
+//            = new ForegroundColorSpan(Color.parseColor(varColor));
 
-    public void setTotalSpan(Editable editable, String total) {
-        editable.setSpan(new ForegroundColorSpan(Color.BLACK),
-                0, total.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-
-        getListPrint(total);
-        getListVarType(total);
-        getBoolSign(total);
-
-        for (ItemPosition list : listPrint)
-            editable.setSpan(colorPrint, list.getStart(), list.getEnd(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-
-        for (ItemPosition list : listBool)
-            editable.setSpan(colorBool, list.getStart(), list.getEnd(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-
-        for (ItemPosition list : listVarType)
-            editable.setSpan(colorVar, list.getStart(), list.getEnd(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-    }
+//    public void setTotalSpan(Editable editable, String total) {
+//        editable.setSpan(new ForegroundColorSpan(Color.BLACK),
+//                0, total.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+//
+//        getListPrint(total);
+//        getListVarType(total);
+//        getBoolSign(total);
+//
+//        for (ItemPosition list : listPrint)
+//            editable.setSpan(colorPrint, list.getStart(), list.getEnd(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+//
+//        for (ItemPosition list : listBool)
+//            editable.setSpan(colorBool, list.getStart(), list.getEnd(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+//
+//        for (ItemPosition list : listVarType)
+//            editable.setSpan(colorVar, list.getStart(), list.getEnd(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+//    }
 
     private void getBoolSign(String total) {
         listBool.clear();

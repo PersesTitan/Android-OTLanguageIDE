@@ -22,8 +22,5 @@ public interface ListInf {
     String singIf = "?ㅅ?";
 
 
-    String printColor = "#7CB342"; //초록색
     String varTypeColor = "#039BE5"; //파란색
-    String boolColor = "#FB8C00"; //주황색
-    String varColor = "#774AD1"; //연보라색
 }
