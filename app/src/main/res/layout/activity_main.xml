@@ -103,7 +103,7 @@
         android:inputType="textCapSentences|textAutoCorrect"
         android:singleLine="true"
         android:maxLines="1"
-        android:visibility="visible"
+        android:visibility="gone"
         android:padding="8dp"
         android:textColorHint="@color/white_100"
         android:textColor="@color/white"
@@ -112,17 +112,27 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <EditText
-        android:id="@+id/content"
-        android:scrollHorizontally="true"
-        android:textColor="@color/black"
-        android:textColorHint="@color/grey"
-        android:padding="16dp"
-        android:gravity="top"
-        android:hint="@string/put_code"
-        android:background="@color/gray"
+    <ScrollView
+        android:id="@+id/scrollView1"
         android:layout_weight="100"
         android:layout_width="match_parent"
-        android:layout_height="0dp"/>
+        android:layout_height="match_parent">
+        <HorizontalScrollView
+            android:id="@+id/scrollView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/content"
+                android:textColor="@color/black"
+                android:textColorHint="@color/grey"
+                android:padding="16dp"
+                android:gravity="top|start"
+                android:hint="@string/put_code"
+                android:background="@color/gray"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </HorizontalScrollView>
+    </ScrollView>
+
 
 </LinearLayout>

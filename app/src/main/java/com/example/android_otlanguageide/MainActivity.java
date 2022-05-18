@@ -4,7 +4,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
-import android.content.DialogInterface;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -15,6 +15,7 @@ import android.text.TextWatcher;
 import android.text.style.CharacterStyle;
 import android.text.style.ForegroundColorSpan;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -26,6 +27,7 @@ import com.pranavpandey.android.dynamic.toasts.DynamicToast;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
@@ -60,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences(shared, 0);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         setColorSpan();
+        request();
 
         binding.play.setVisibility(View.VISIBLE);
         binding.stop.setVisibility(View.GONE);
@@ -95,7 +98,6 @@ public class MainActivity extends AppCompatActivity {
                     File dir = new File(Environment.getExternalStorageDirectory(), "OTLanguage");
                     List<String> listFiles = extensionFilter(dir);
                     readFiles(listFiles);
-
                     break;
 
                 case R.id.downloadFile:
@@ -158,26 +160,38 @@ public class MainActivity extends AppCompatActivity {
     private void readFiles(List<String> list) {
         totalStringBuilder = new StringBuilder();
         var size = list.size();
-        String[] items = list.toArray(new String[size]);
+        String[] items = new String[size];
+        for (int i = 0; i < list.size(); i++) {
+            var pos = list.get(i).lastIndexOf("/") + 1;
+            items[i] = list.get(i).substring(pos);
+        }
         var builder = new AlertDialog.Builder(this);
         builder.setTitle("파일을 선택해주세요.");
         builder.setItems(items, (dialogInterface, i) -> {
             String path = list.get(i);
-            var file = new File(path);
-            if (!file.canRead()) errorToast("파일을 읽을 수 없습니다.");
-            else if (!path.toLowerCase(Locale.ROOT).endsWith(".otl"))
+            if (!new File(path).canRead()) errorToast("파일을 읽을 수 없습니다.");
+            if (!path.toLowerCase(Locale.ROOT).endsWith(".otl"))
                 errorToast("확장자가 일치하지 않습니다.");
             else {
-                try (var buffer = new FileReader(file)) {
-                    var fileReader = new BufferedReader(buffer);
+                File file = new File(path);
+                try (var br = new BufferedReader(new FileReader(file))){
                     String line;
-                    while ((line = fileReader.readLine()) != null)
+                    while ((line = br.readLine()) != null)
                         totalStringBuilder.append(line).append("\n");
-                } catch (IOException ignored) { }
+                    binding.content.setText(totalStringBuilder.toString());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+//            else {
+//                try (var buffer = new FileReader(file)) {
+//                    var fileReader = new BufferedReader(buffer);
+//                    String line;
+//                    while ((line = fileReader.readLine()) != null)
+//                        totalStringBuilder.append(line).append("\n");
+//                } catch (IOException ignored) { }
             }
         });
-        var alertDialog = builder.create();
-        alertDialog.show();
+        builder.create().show();
     }
 
     /**
@@ -254,5 +268,21 @@ public class MainActivity extends AppCompatActivity {
 
     private void noToast(String message) {
         DynamicToast.makeSuccess(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private void request() {
+        var input = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        binding.scrollView1.setOnTouchListener((view, motionEvent) -> {
+            binding.content.requestFocus();
+            input.showSoftInput(binding.content, 0);
+            return false;
+        });
+
+        binding.scrollView2.setOnTouchListener((view, motionEvent) -> {
+            binding.content.requestFocus();
+            input.showSoftInput(binding.content, 0);
+            return false;
+        });
     }
 }
