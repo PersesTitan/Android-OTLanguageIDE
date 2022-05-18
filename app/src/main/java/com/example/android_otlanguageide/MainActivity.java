@@ -5,7 +5,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -25,15 +24,10 @@ import com.example.android_otlanguageide.setting.TextSetting;
 import com.pranavpandey.android.dynamic.toasts.DynamicToast;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -160,26 +154,35 @@ public class MainActivity extends AppCompatActivity {
         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
 
         @Override
-        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//            boolean bool = !setting.getText(binding.content).isEmpty();
+////            if (textSetting.chek(i, i1)!=null) {
+////
+////            }
+//            if (bool) tread();
+        }
 
         @Override
         public void afterTextChanged(Editable editable) {
-            if (!setting.getText(binding.content).isEmpty()) tread();
+            String total = setting.getText(binding.content);
+            textSetting.setTotalSpan(editable, total);
         }
     };
 
     private void tread() {
+
+        textSetting.setTotalSpan(total);
+
         runOnUiThread(() -> {
             binding.content.removeTextChangedListener(textWatcher);
             new Thread(() -> {
                 try {
                     Thread.sleep(1000);
-                    int position = binding.content.getSelectionStart();
-                    String total = setting.getText(binding.content);
-                    List<ItemPosition> list = textSetting.getList(total);
-                    binding.content.setText(textSetting.setTotalSpan(total, list));
-                    binding.content.addTextChangedListener(textWatcher);
-                    binding.content.setSelection(position);
+//                    int position = binding.content.getSelectionStart();
+//                    String total = setting.getText(binding.content);
+//                    binding.content.setText(textSetting.setTotalSpan(total));
+//                    binding.content.addTextChangedListener(textWatcher);
+//                    binding.content.setSelection(position);
                 } catch (InterruptedException e) {
                     binding.content.addTextChangedListener(textWatcher);
                 }
