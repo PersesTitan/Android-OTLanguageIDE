@@ -1,5 +1,5 @@
 package com.example.android_otlanguageide.activity.item;
 
 public interface PrintWork {
-    void start(String line);
+    void start(String line, StringBuilder id);
 }

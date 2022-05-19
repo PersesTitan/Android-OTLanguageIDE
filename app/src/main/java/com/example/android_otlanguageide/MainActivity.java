@@ -42,12 +42,12 @@ import lombok.AllArgsConstructor;
 
 public class MainActivity extends AppCompatActivity {
 
+    public ActivityMainBinding binding;
     private final TextSetting textSetting = new TextSetting();
     private final String CONTENT = "CONTENT";
     final String shared = "file";
     StringBuilder totalStringBuilder;
     StringBuilder stringBuilder;
-    ActivityMainBinding binding;
     String total;
 
     @Override

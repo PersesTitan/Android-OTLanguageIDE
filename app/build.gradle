@@ -32,6 +32,8 @@ android {
 
 dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.24'
+    implementation 'org.jetbrains:annotations:23.0.0'
+    implementation 'jakarta.validation:jakarta.validation-api:3.0.1'
     annotationProcessor 'org.projectlombok:lombok:1.18.24'
     implementation 'com.pranavpandey.android:dynamic-toasts:4.1.0'
     implementation 'androidx.appcompat:appcompat:1.4.1'

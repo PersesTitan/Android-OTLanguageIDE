@@ -5,6 +5,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.android_otlanguageide.MainActivity;
 import com.example.android_otlanguageide.activity.item.Check;
 
 import java.util.Scanner;
@@ -12,12 +13,7 @@ import java.util.Scanner;
 public class ScannerP implements Check {
 
     private static final String SPECIFIED = "ㅅㅇㅅ";
-    private final EditText editText;
     private boolean checkBool = false;
-
-    public ScannerP(EditText editText) {
-        this.editText = editText;
-    }
 
     /**
      * ex) ㅇㅅㅇ 11:ㅅㅇㅅ
@@ -35,6 +31,8 @@ public class ScannerP implements Check {
      */
     public String start(String line) {
         //확인 버튼 클릭시
+        MainActivity mainActivity = new MainActivity();
+        var editText = mainActivity.binding.input;
         editText.setImeOptions(EditorInfo.IME_ACTION_DONE);
         var onEditorActionListener = new EditText.OnEditorActionListener() {
             @Override
@@ -46,7 +44,6 @@ public class ScannerP implements Check {
             }
         };
         editText.setOnEditorActionListener(onEditorActionListener);
-
 
         Scanner scanner = new Scanner(System.in);
         if (check(line)) {
