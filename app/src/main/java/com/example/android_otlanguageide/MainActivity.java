@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.example.android_otlanguageide.activity.Running;
 import com.example.android_otlanguageide.databinding.ActivityMainBinding;
 import com.example.android_otlanguageide.setting.Setting;
 import com.example.android_otlanguageide.setting.TextSetting;
@@ -41,9 +42,7 @@ import lombok.AllArgsConstructor;
 
 public class MainActivity extends AppCompatActivity {
 
-    private final Setting setting = new Setting();
     private final TextSetting textSetting = new TextSetting();
-
     private final String CONTENT = "CONTENT";
     final String shared = "file";
     StringBuilder totalStringBuilder;
@@ -57,6 +56,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        var running = new Running(binding);
 
         SharedPreferences sharedPreferences = getSharedPreferences(shared, 0);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -73,15 +74,17 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.play:
                     binding.stop.setVisibility(View.VISIBLE);
                     binding.play.setVisibility(View.GONE);
-                    total = setting.getText(binding.content);
+                    total = textSetting.getText(binding.content);
+                    running.start();
                     break;
 
                 case R.id.stop:
+                    running.stop();
                     stop();
                     break;
 
                 case R.id.thisSave:
-                    total = setting.getText(binding.content);
+                    total = textSetting.getText(binding.content);
                     editor.putString(CONTENT, total);
                     if (editor.commit()) okToast("저장되었습니다");
                     else errorToast("오류가 발생하였습니다.");
@@ -112,12 +115,12 @@ public class MainActivity extends AppCompatActivity {
                     dialog.setMessage("파일 이름을 입력해주세요");
                     dialog.setView(editText);
                     dialog.setPositiveButton("확인", (dialogInterface, i) -> {
-                        String text = setting.getText(editText);
+                        String text = textSetting.getText(editText);
                         if (text.isEmpty()) waringToast("파일이름을 입력해주세요.");
                         else {
-                            stringBuilder = new StringBuilder(setting.getText(editText));
+                            stringBuilder = new StringBuilder(textSetting.getText(editText));
                             stringBuilder.append(".otl");
-                            createFile(stringBuilder.toString(), setting.getText(binding.content));
+                            createFile(stringBuilder.toString(), textSetting.getText(binding.content));
                         }
                     }).setNegativeButton("취소", (dialogInterface, i) -> { });
                     dialog.show();

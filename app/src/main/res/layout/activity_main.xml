@@ -82,15 +82,20 @@
         android:layout_weight="10"
         android:layout_width="match_parent"
         android:layout_height="0dp">
-
-        <TextView
-            android:id="@+id/result"
-            android:padding="8dp"
-            android:textColorHint="@color/white_100"
-            android:textColor="@color/white"
-            android:hint="@string/output_window"
+        <HorizontalScrollView
+            android:background="@color/blue_black"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/result"
+                android:gravity="top|start"
+                android:padding="8dp"
+                android:textColorHint="@color/white_100"
+                android:textColor="@color/white"
+                android:hint="@string/output_window"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </HorizontalScrollView>
     </ScrollView>
 
     <View
@@ -117,7 +122,7 @@
         android:background="@color/gray"
         android:layout_weight="100"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp">
         <HorizontalScrollView
             android:id="@+id/scrollView2"
             android:background="@color/gray"
@@ -135,6 +140,4 @@
                 android:layout_height="wrap_content"/>
         </HorizontalScrollView>
     </ScrollView>
-
-
 </LinearLayout>
