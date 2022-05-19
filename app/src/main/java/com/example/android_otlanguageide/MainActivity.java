@@ -22,8 +22,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.example.android_otlanguageide.activity.Running;
-import com.example.android_otlanguageide.activity.variable.Variable;
+import com.example.android_otlanguageide.activity.item.Check;
 import com.example.android_otlanguageide.databinding.ActivityMainBinding;
 import com.example.android_otlanguageide.setting.TextSetting;
 import com.pranavpandey.android.dynamic.toasts.DynamicToast;
@@ -42,9 +41,11 @@ import java.util.regex.Pattern;
 
 import lombok.AllArgsConstructor;
 
-public class MainActivity extends AppCompatActivity {
+@RequiresApi(api = Build.VERSION_CODES.N)
+public class MainActivity extends AppCompatActivity implements Check {
 
-    public ActivityMainBinding binding;
+    @SuppressLint("StaticFieldLeak")
+    public static ActivityMainBinding binding;
     private final TextSetting textSetting = new TextSetting();
     private final String CONTENT = "CONTENT";
     final String shared = "file";
@@ -59,10 +60,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
-        Variable variable = new Variable();
-        variable.setBinding(binding);
-        var running = new Running(binding);
 
         SharedPreferences sharedPreferences = getSharedPreferences(shared, 0);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -84,7 +81,6 @@ public class MainActivity extends AppCompatActivity {
                     break;
 
                 case R.id.stop:
-//                    running.stop();
                     binding.play.setVisibility(View.VISIBLE);
                     binding.stop.setVisibility(View.GONE);
                     binding.input.setVisibility(View.GONE);
@@ -287,5 +283,10 @@ public class MainActivity extends AppCompatActivity {
             input.showSoftInput(binding.content, 0);
             return false;
         });
+    }
+
+    @Override
+    public boolean check(String line) {
+        return false;
     }
 }

@@ -10,6 +10,7 @@ import com.example.android_otlanguageide.setting.Setting;
 
 import java.util.List;
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class Println extends Setting implements Check, PrintWork {
     private static final String SPECIFIED = "ㅆㅁㅆ";
 

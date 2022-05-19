@@ -1,12 +1,22 @@
 package com.example.android_otlanguageide.activity.variable;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import com.example.android_otlanguageide.activity.item.Check;
+import com.example.android_otlanguageide.databinding.ActivityMainBinding;
 import com.example.android_otlanguageide.setting.Setting;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-public class Variable extends VariableItem implements Check {
+@RequiresApi(api = Build.VERSION_CODES.N)
+public class Variable extends Setting implements Check {
 
     /**
      * 변수 :[변수명][공백] 을 변수 값으로 대체함

@@ -1,6 +1,7 @@
 package com.example.android_otlanguageide.activity.print;
 
 import android.content.Context;
+import android.os.Build;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -8,23 +9,22 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
+
 import com.example.android_otlanguageide.MainActivity;
 import com.example.android_otlanguageide.activity.item.Check;
 import com.example.android_otlanguageide.databinding.ActivityMainBinding;
+import com.example.android_otlanguageide.setting.Setting;
 import com.example.android_otlanguageide.setting.TextSetting;
 
 import java.util.Scanner;
 
-public class ScannerP implements Check {
+@RequiresApi(api = Build.VERSION_CODES.N)
+public class ScannerP extends Setting implements Check {
     public volatile boolean checkBool = false;
-    protected final ActivityMainBinding binding;
-    private final TextSetting textSetting = new TextSetting();
+
     private static final String SPECIFIED = "ㅅㅇㅅ";
     final ThreadItem threadItem = new ThreadItem();
-
-    public ScannerP(ActivityMainBinding binding) {
-        this.binding = binding;
-    }
 
     /**
      * ex) ㅇㅅㅇ 11:ㅅㅇㅅ
@@ -49,8 +49,6 @@ public class ScannerP implements Check {
         editText.setOnEditorActionListener(new DoneOnEditorActionListener());
 
         threadItem.start();
-
-        System.out.println("ScannerP.start");
 
         line = line.replaceFirst(SPECIFIED, textSetting.getText(binding.input));
         if (check(line)) return start(line);
