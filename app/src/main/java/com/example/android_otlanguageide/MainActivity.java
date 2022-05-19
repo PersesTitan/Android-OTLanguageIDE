@@ -27,7 +27,6 @@ import com.pranavpandey.android.dynamic.toasts.DynamicToast;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
@@ -113,9 +112,13 @@ public class MainActivity extends AppCompatActivity {
                     dialog.setMessage("파일 이름을 입력해주세요");
                     dialog.setView(editText);
                     dialog.setPositiveButton("확인", (dialogInterface, i) -> {
-                        stringBuilder = new StringBuilder(setting.getText(editText));
-                        stringBuilder.append(".otl");
-                        createFile(stringBuilder.toString(), setting.getText(binding.content));
+                        String text = setting.getText(editText);
+                        if (text.isEmpty()) waringToast("파일이름을 입력해주세요.");
+                        else {
+                            stringBuilder = new StringBuilder(setting.getText(editText));
+                            stringBuilder.append(".otl");
+                            createFile(stringBuilder.toString(), setting.getText(binding.content));
+                        }
                     }).setNegativeButton("취소", (dialogInterface, i) -> { });
                     dialog.show();
                     break;
@@ -182,13 +185,6 @@ public class MainActivity extends AppCompatActivity {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-//            else {
-//                try (var buffer = new FileReader(file)) {
-//                    var fileReader = new BufferedReader(buffer);
-//                    String line;
-//                    while ((line = fileReader.readLine()) != null)
-//                        totalStringBuilder.append(line).append("\n");
-//                } catch (IOException ignored) { }
             }
         });
         builder.create().show();
@@ -210,7 +206,7 @@ public class MainActivity extends AppCompatActivity {
             try (FileOutputStream fos = new FileOutputStream(file)) {
                 fos.write(total.getBytes(StandardCharsets.UTF_8));
             } catch (IOException ignored) { }
-        } else noToast("권한 허용을 해주세요.");
+        } else waringToast("권한 허용을 해주세요.");
     }
 
     /**
@@ -220,17 +216,21 @@ public class MainActivity extends AppCompatActivity {
         binding.content.addTextChangedListener(new TextWatcher() {
             final String print = "\\b(ㅅㅁㅅ|ㅆㅁㅆ|ㅅㅇㅅ)\\b";
             final String var = "\\b(ㅇㅈㅇ|ㅇㅉㅇ|ㅇㅂㅇ|ㅇㅁㅇ|ㅇㄱㅇ|ㅇㅅㅇ|ㅇㅆㅇ)\\b";
-            final String bool = "\\b(ㅇㅇ|ㄴㄴ|ㄸ|ㄲ|\\^\\^|\\?ㅅ\\?)\\b";
+            final String bool1 = "\\b(ㅇㅇ|ㄴㄴ)\\b";
+            final String bool2 = "\\b(ㄸ|ㄲ|\\^\\^|\\?ㅅ\\?)\\b";
             final int printColor = Color.parseColor("#006400"); // 검은색 초록색
             final int varColor = Color.parseColor("#9370DB"); //연보라색
-            final int boolColor = Color.parseColor("#FF8C00"); //검은 주황
+            final int boolColor1 = Color.parseColor("#FF8C00"); //검은 주황
+            final int boolColor2 = Color.parseColor("#00B8D4"); //파란색
             final Pattern printPattern = Pattern.compile((print));
             final Pattern varPattern = Pattern.compile((var));
-            final Pattern boolPattern = Pattern.compile((bool));
+            final Pattern bool1Pattern = Pattern.compile((bool1));
+            final Pattern bool2Pattern = Pattern.compile((bool2));
             final ColorScheme printScheme = new ColorScheme(printPattern, printColor);
             final ColorScheme varScheme = new ColorScheme(varPattern, varColor);
-            final ColorScheme boolScheme = new ColorScheme(boolPattern, boolColor);
-            final ColorScheme[] schemes = {printScheme, varScheme, boolScheme};
+            final ColorScheme bool1Scheme = new ColorScheme(bool1Pattern, boolColor1);
+            final ColorScheme bool2Scheme = new ColorScheme(bool2Pattern, boolColor2);
+            final ColorScheme[] schemes = {printScheme, varScheme, bool1Scheme, bool2Scheme};
 
             @Override public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
             @Override public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
@@ -266,8 +266,8 @@ public class MainActivity extends AppCompatActivity {
         DynamicToast.makeSuccess(this, message, Toast.LENGTH_SHORT).show();
     }
 
-    private void noToast(String message) {
-        DynamicToast.makeSuccess(this, message, Toast.LENGTH_SHORT).show();
+    private void waringToast(String message) {
+        DynamicToast.makeWarning(this, message, Toast.LENGTH_SHORT).show();
     }
 
     @SuppressLint("ClickableViewAccessibility")

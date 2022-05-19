@@ -114,11 +114,13 @@
 
     <ScrollView
         android:id="@+id/scrollView1"
+        android:background="@color/gray"
         android:layout_weight="100"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <HorizontalScrollView
             android:id="@+id/scrollView2"
+            android:background="@color/gray"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <EditText
