@@ -1,5 +1,6 @@
 package com.example.android_otlanguageide;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,6 +8,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.text.Editable;
@@ -22,7 +24,6 @@ import android.widget.Toast;
 
 import com.example.android_otlanguageide.activity.Running;
 import com.example.android_otlanguageide.databinding.ActivityMainBinding;
-import com.example.android_otlanguageide.setting.Setting;
 import com.example.android_otlanguageide.setting.TextSetting;
 import com.pranavpandey.android.dynamic.toasts.DynamicToast;
 
@@ -42,7 +43,7 @@ import lombok.AllArgsConstructor;
 
 public class MainActivity extends AppCompatActivity {
 
-    public ActivityMainBinding binding;
+    public static ActivityMainBinding binding;
     private final TextSetting textSetting = new TextSetting();
     private final String CONTENT = "CONTENT";
     final String shared = "file";
@@ -51,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
     String total;
 
     @Override
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @SuppressLint("NonConstantResourceId")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

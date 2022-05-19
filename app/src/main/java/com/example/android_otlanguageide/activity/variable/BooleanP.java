@@ -15,7 +15,7 @@ public class BooleanP extends Setting implements Check, VariableWork {
     }
 
     @Override
-    public void start(String line) throws Exception {
+    public void start(String line) {
         KeyValueItem keyValue = setKeyValue(SPECIFIED, line);
         String key = keyValue.getKey();
         String value = keyValue.getValue();

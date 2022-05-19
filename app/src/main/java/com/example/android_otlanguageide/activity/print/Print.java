@@ -1,6 +1,8 @@
 package com.example.android_otlanguageide.activity.print;
 
-import android.widget.EditText;
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
 
 import com.example.android_otlanguageide.activity.item.Check;
 import com.example.android_otlanguageide.activity.item.PrintWork;
@@ -9,7 +11,6 @@ import com.example.android_otlanguageide.setting.Setting;
 import java.util.List;
 
 public class Print extends Setting implements Check, PrintWork {
-
     private static final String SPECIFIED = "ㅅㅁㅅ";
 
     @Override
@@ -18,6 +19,7 @@ public class Print extends Setting implements Check, PrintWork {
     }
 
     @Override
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void start(String line, StringBuilder id) {
         /* --ㅅㅁㅅ 제거-- */
         int start = line.indexOf(SPECIFIED) + SPECIFIED.length();

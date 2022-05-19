@@ -6,7 +6,7 @@ import com.example.android_otlanguageide.setting.Setting;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Variable extends Setting implements Check {
+public class Variable extends VariableItem implements Check {
 
     /**
      * 변수 :[변수명][공백] 을 변수 값으로 대체함

@@ -7,13 +7,16 @@ import android.widget.TextView;
 
 import com.example.android_otlanguageide.MainActivity;
 import com.example.android_otlanguageide.activity.item.Check;
+import com.example.android_otlanguageide.databinding.ActivityMainBinding;
+import com.example.android_otlanguageide.setting.TextSetting;
 
 import java.util.Scanner;
 
 public class ScannerP implements Check {
-
-    private static final String SPECIFIED = "ㅅㅇㅅ";
+    private final TextSetting textSetting = new TextSetting();
+    protected final ActivityMainBinding binding = MainActivity.binding;
     private boolean checkBool = false;
+    private static final String SPECIFIED = "ㅅㅇㅅ";
 
     /**
      * ex) ㅇㅅㅇ 11:ㅅㅇㅅ
@@ -26,32 +29,48 @@ public class ScannerP implements Check {
     }
 
     /**
-     * @param line 라인 받아 오기
-     * @return scanner 가 존재하지 않을때까지 받아오기
+     * @param line 1줄 받아오기
+     * @return 입력한 값 받아오기
      */
     public String start(String line) {
         //확인 버튼 클릭시
-        MainActivity mainActivity = new MainActivity();
-        var editText = mainActivity.binding.input;
+        var editText = binding.input;
+        editText.setText(null);
         editText.setImeOptions(EditorInfo.IME_ACTION_DONE);
-        var onEditorActionListener = new EditText.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-                boolean bool = keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER;
-                bool = bool || i == EditorInfo.IME_ACTION_DONE;
-                checkBool = bool;
-                return bool;
-            }
-        };
         editText.setOnEditorActionListener(onEditorActionListener);
 
-        Scanner scanner = new Scanner(System.in);
-        if (check(line)) {
-            line = line.replaceFirst(SPECIFIED, scanner.next());
-            return start(line);
-        } else return line;
+        ThreadItem threadItem = new ThreadItem();
+        threadItem.start();
+
+        synchronized (threadItem) {
+            try {
+                threadItem.wait();
+            } catch (Exception ignored) { }
+        }
+
+        line = line.replaceFirst(SPECIFIED, textSetting.getText(editText));
+        if (check(line)) return start(line);
+        else return line;
     }
 
+    private class ThreadItem extends Thread {
+        @Override
+        public void run() {
+            synchronized(this){
+                while (checkBool) {
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException ignored) { }
+                }
+            }
+            notify();
+        }
+    }
 
-
+    TextView.OnEditorActionListener onEditorActionListener = (textView, i, keyEvent) -> {
+        boolean bool = keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER;
+        bool = bool || i == EditorInfo.IME_ACTION_DONE;
+        checkBool = bool;
+        return bool;
+    };
 }
