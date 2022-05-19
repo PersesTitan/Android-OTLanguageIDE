@@ -10,16 +10,12 @@ import com.example.android_otlanguageide.activity.variable.Variable;
 import com.example.android_otlanguageide.activity.variable.VariableItem;
 import com.example.android_otlanguageide.databinding.ActivityMainBinding;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
 
 public class Setting extends VariableItem {
-    protected final ScannerP scannerP = new ScannerP();
+    protected final ScannerP scannerP = new ScannerP(binding);
     protected final Variable variable = new Variable();
 
     /**

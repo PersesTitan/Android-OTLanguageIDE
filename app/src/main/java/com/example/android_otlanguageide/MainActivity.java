@@ -23,6 +23,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.android_otlanguageide.activity.Running;
+import com.example.android_otlanguageide.activity.variable.Variable;
 import com.example.android_otlanguageide.databinding.ActivityMainBinding;
 import com.example.android_otlanguageide.setting.TextSetting;
 import com.pranavpandey.android.dynamic.toasts.DynamicToast;
@@ -43,7 +44,7 @@ import lombok.AllArgsConstructor;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static ActivityMainBinding binding;
+    public ActivityMainBinding binding;
     private final TextSetting textSetting = new TextSetting();
     private final String CONTENT = "CONTENT";
     final String shared = "file";
@@ -59,6 +60,8 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        Variable variable = new Variable();
+        variable.setBinding(binding);
         var running = new Running(binding);
 
         SharedPreferences sharedPreferences = getSharedPreferences(shared, 0);
@@ -81,8 +84,10 @@ public class MainActivity extends AppCompatActivity {
                     break;
 
                 case R.id.stop:
-                    running.stop();
-                    stop();
+//                    running.stop();
+                    binding.play.setVisibility(View.VISIBLE);
+                    binding.stop.setVisibility(View.GONE);
+                    binding.input.setVisibility(View.GONE);
                     break;
 
                 case R.id.thisSave:
@@ -142,12 +147,6 @@ public class MainActivity extends AppCompatActivity {
         binding.downloadFile.setOnClickListener(listener);
     }
 
-    private void stop() {
-        binding.play.setVisibility(View.VISIBLE);
-        binding.stop.setVisibility(View.GONE);
-        binding.input.setVisibility(View.GONE);
-    }
-
     private List<String> extensionFilter(File folder) {
         List<String> result = new ArrayList<>();
         File[] files = folder.listFiles();
@@ -163,7 +162,6 @@ public class MainActivity extends AppCompatActivity {
             }
         } return result;
     }
-
 
     private void readFiles(List<String> list) {
         totalStringBuilder = new StringBuilder();
@@ -219,23 +217,23 @@ public class MainActivity extends AppCompatActivity {
      */
     private void setColorSpan() {
         binding.content.addTextChangedListener(new TextWatcher() {
-            final String print = "\\n\\s*(ㅅㅁㅅ|ㅆㅁㅆ|ㅅㅇㅅ)\\b|^\\s*(ㅅㅁㅅ|ㅆㅁㅆ|ㅅㅇㅅ)\\s+";
-            final String var = "\\b(ㅇㅈㅇ|ㅇㅉㅇ|ㅇㅂㅇ|ㅇㅁㅇ|ㅇㄱㅇ|ㅇㅅㅇ|ㅇㅆㅇ)\\b";
-            final String bool1 = "\\b(ㅇㅇ|ㄴㄴ)\\b";
-            final String bool2 = "\\b(ㄸ|ㄲ|\\^\\^|\\?ㅅ\\?)\\b";
-            final int printColor = Color.parseColor("#006400"); // 검은색 초록색
-            final int varColor = Color.parseColor("#9370DB"); //연보라색
-            final int boolColor1 = Color.parseColor("#FF8C00"); //검은 주황
-            final int boolColor2 = Color.parseColor("#00B8D4"); //파란색
-            final Pattern printPattern = Pattern.compile((print));
-            final Pattern varPattern = Pattern.compile((var));
-            final Pattern bool1Pattern = Pattern.compile((bool1));
-            final Pattern bool2Pattern = Pattern.compile((bool2));
-            final ColorScheme printScheme = new ColorScheme(printPattern, printColor);
-            final ColorScheme varScheme = new ColorScheme(varPattern, varColor);
-            final ColorScheme bool1Scheme = new ColorScheme(bool1Pattern, boolColor1);
-            final ColorScheme bool2Scheme = new ColorScheme(bool2Pattern, boolColor2);
-            final ColorScheme[] schemes = {printScheme, varScheme, bool1Scheme, bool2Scheme};
+            private final String print = "\\n\\s*(ㅅㅁㅅ|ㅆㅁㅆ)\\b|^\\s*(ㅅㅁㅅ|ㅆㅁㅆ)\\s+|\\b(ㅅㅇㅅ)\\b";
+            private final String var = "\\b(ㅇㅈㅇ|ㅇㅉㅇ|ㅇㅂㅇ|ㅇㅁㅇ|ㅇㄱㅇ|ㅇㅅㅇ|ㅇㅆㅇ)\\b";
+            private final String bool1 = "\\b(ㅇㅇ|ㄴㄴ)\\b";
+            private final String bool2 = "\\b(ㄸ|ㄲ|\\^\\^|\\?ㅅ\\?)\\b";
+            private final int printColor = Color.parseColor("#006400"); // 검은색 초록색
+            private final int varColor = Color.parseColor("#9370DB"); //연보라색
+            private final int boolColor1 = Color.parseColor("#FF8C00"); //검은 주황
+            private final int boolColor2 = Color.parseColor("#00B8D4"); //파란색
+            private final Pattern printPattern = Pattern.compile((print));
+            private final Pattern varPattern = Pattern.compile((var));
+            private final Pattern bool1Pattern = Pattern.compile((bool1));
+            private final Pattern bool2Pattern = Pattern.compile((bool2));
+            private final ColorScheme printScheme = new ColorScheme(printPattern, printColor);
+            private final ColorScheme varScheme = new ColorScheme(varPattern, varColor);
+            private final ColorScheme bool1Scheme = new ColorScheme(bool1Pattern, boolColor1);
+            private final ColorScheme bool2Scheme = new ColorScheme(bool2Pattern, boolColor2);
+            private final ColorScheme[] schemes = {printScheme, varScheme, bool1Scheme, bool2Scheme};
 
             @Override public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
             @Override public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) { }

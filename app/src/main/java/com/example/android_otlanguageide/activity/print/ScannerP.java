@@ -1,7 +1,10 @@
 package com.example.android_otlanguageide.activity.print;
 
+import android.content.Context;
 import android.view.KeyEvent;
+import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -13,10 +16,15 @@ import com.example.android_otlanguageide.setting.TextSetting;
 import java.util.Scanner;
 
 public class ScannerP implements Check {
+    public volatile boolean checkBool = false;
+    protected final ActivityMainBinding binding;
     private final TextSetting textSetting = new TextSetting();
-    protected final ActivityMainBinding binding = MainActivity.binding;
-    private boolean checkBool = false;
     private static final String SPECIFIED = "ㅅㅇㅅ";
+    final ThreadItem threadItem = new ThreadItem();
+
+    public ScannerP(ActivityMainBinding binding) {
+        this.binding = binding;
+    }
 
     /**
      * ex) ㅇㅅㅇ 11:ㅅㅇㅅ
@@ -34,21 +42,17 @@ public class ScannerP implements Check {
      */
     public String start(String line) {
         //확인 버튼 클릭시
+        checkBool = true;
         var editText = binding.input;
         editText.setText(null);
-        editText.setImeOptions(EditorInfo.IME_ACTION_DONE);
-        editText.setOnEditorActionListener(onEditorActionListener);
+        editText.setVisibility(View.VISIBLE);
+        editText.setOnEditorActionListener(new DoneOnEditorActionListener());
 
-        ThreadItem threadItem = new ThreadItem();
         threadItem.start();
 
-        synchronized (threadItem) {
-            try {
-                threadItem.wait();
-            } catch (Exception ignored) { }
-        }
+        System.out.println("ScannerP.start");
 
-        line = line.replaceFirst(SPECIFIED, textSetting.getText(editText));
+        line = line.replaceFirst(SPECIFIED, textSetting.getText(binding.input));
         if (check(line)) return start(line);
         else return line;
     }
@@ -59,18 +63,24 @@ public class ScannerP implements Check {
             synchronized(this){
                 while (checkBool) {
                     try {
-                        Thread.sleep(100);
+                        Thread.sleep(1);
                     } catch (InterruptedException ignored) { }
                 }
             }
-            notify();
         }
     }
 
-    TextView.OnEditorActionListener onEditorActionListener = (textView, i, keyEvent) -> {
-        boolean bool = keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER;
-        bool = bool || i == EditorInfo.IME_ACTION_DONE;
-        checkBool = bool;
-        return bool;
-    };
+    private class DoneOnEditorActionListener implements TextView.OnEditorActionListener {
+        @Override
+        public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                var imm = (InputMethodManager) textView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(textView.getWindowToken(), 0);
+                checkBool = false;
+                return true;
+            }
+            checkBool = true;
+            return false;
+        }
+    }
 }

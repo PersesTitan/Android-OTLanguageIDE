@@ -105,7 +105,7 @@
 
     <EditText
         android:id="@+id/input"
-        android:inputType="textCapSentences|textAutoCorrect"
+        android:imeOptions="actionDone"
         android:singleLine="true"
         android:maxLines="1"
         android:visibility="gone"

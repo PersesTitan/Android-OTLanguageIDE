@@ -6,6 +6,7 @@ import androidx.annotation.RequiresApi;
 
 import com.example.android_otlanguageide.activity.item.Check;
 import com.example.android_otlanguageide.activity.item.PrintWork;
+import com.example.android_otlanguageide.databinding.ActivityMainBinding;
 import com.example.android_otlanguageide.setting.Setting;
 
 import java.util.List;
