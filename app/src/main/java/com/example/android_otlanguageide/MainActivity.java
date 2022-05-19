@@ -217,7 +217,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void setColorSpan() {
         binding.content.addTextChangedListener(new TextWatcher() {
-            final String print = "\\b(ㅅㅁㅅ|ㅆㅁㅆ|ㅅㅇㅅ)\\b";
+            final String print = "\\n\\s*(ㅅㅁㅅ|ㅆㅁㅆ|ㅅㅇㅅ)\\b|^\\s*(ㅅㅁㅅ|ㅆㅁㅆ|ㅅㅇㅅ)\\s+";
             final String var = "\\b(ㅇㅈㅇ|ㅇㅉㅇ|ㅇㅂㅇ|ㅇㅁㅇ|ㅇㄱㅇ|ㅇㅅㅇ|ㅇㅆㅇ)\\b";
             final String bool1 = "\\b(ㅇㅇ|ㄴㄴ)\\b";
             final String bool2 = "\\b(ㄸ|ㄲ|\\^\\^|\\?ㅅ\\?)\\b";
