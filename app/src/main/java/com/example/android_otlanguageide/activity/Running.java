@@ -19,13 +19,13 @@ public class Running {
 
     public void start() {
         check = true;
-         stringBuilder = new StringBuilder();
-         //입력 되있는 코드 읽기
-         var lines = textSetting.getText(binding.content).split("\\n");
-         for (String line : lines) {
-             if (!check) break;
+        stringBuilder = new StringBuilder();
+        //입력 되있는 코드 읽기
+        var lines = textSetting.getText(binding.content).split("\\n");
+        for (String line : lines) {
+            if (!check) break;
 
-         }
+        }
     }
 
     public void stop() {
