@@ -145,6 +145,10 @@ public class MainActivity extends AppCompatActivity implements Check {
                     dialog.show();
                     break;
 
+                case R.id.clear:
+                    binding.result.setText(null);
+                    break;
+
                 default:
                     assert false;
                     break;
@@ -157,6 +161,7 @@ public class MainActivity extends AppCompatActivity implements Check {
         binding.thisLoad.setOnClickListener(listener);
         binding.loadFile.setOnClickListener(listener);
         binding.downloadFile.setOnClickListener(listener);
+        binding.clear.setOnClickListener(listener);
 
         binding.autoSave.setOnCheckedChangeListener((compoundButton, b) -> {
             editor.putBoolean(autoSave, b);
