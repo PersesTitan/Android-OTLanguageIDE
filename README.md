@@ -1,6 +1,9 @@
-# Android-OTLanguageIDE
-모바일 버전의 OTLanguage언어의 개발통합환경 입니다.
+# OTLanguageIDE
+모바일 버전의 [OTLanguage](https://github.com/PersesTitan/OTLanguage)언어의 개발통합환경 입니다.
 </br></br></br>
+
+# 목차
+  - [버튼 설명](https://github.com/PersesTitan/Android-OTLanguageIDE/edit/master/README.md#%EB%B2%84%ED%8A%BC-%EC%84%A4%EB%AA%85)
 
 ## 버튼 설명
 
