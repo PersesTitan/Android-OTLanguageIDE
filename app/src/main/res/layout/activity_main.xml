@@ -53,6 +53,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/autoSave"
+            android:layout_marginStart="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/autoSave"
+            android:textColor="@color/white"
+            app:trackTint="#ADFFFFFF" />
+
         <View
             android:layout_weight="1"
             android:layout_height="0dp"

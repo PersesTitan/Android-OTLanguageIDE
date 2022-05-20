@@ -21,6 +21,7 @@ import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -29,6 +30,8 @@ import com.example.android_otlanguageide.activity.item.Check;
 import com.example.android_otlanguageide.databinding.ActivityMainBinding;
 import com.example.android_otlanguageide.setting.Setting;
 import com.pranavpandey.android.dynamic.toasts.DynamicToast;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -47,10 +50,13 @@ import lombok.AllArgsConstructor;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class MainActivity extends AppCompatActivity implements Check {
 
-    public static StringBuilder totalStringBuilder = new StringBuilder();
     @SuppressLint("StaticFieldLeak")
     public static ActivityMainBinding binding;
+    public static StringBuilder totalStringBuilder = new StringBuilder();
+    private SharedPreferences.Editor editor;
+
     private final String CONTENT = "CONTENT";
+    private final String autoSave = "AutoSave";
     final String shared = "file";
     String total;
 
@@ -63,15 +69,17 @@ public class MainActivity extends AppCompatActivity implements Check {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        SharedPreferences sharedPreferences = getSharedPreferences(shared, 0);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
+        var sharedPreferences = getSharedPreferences(shared, 0);
+        editor = sharedPreferences.edit();
+        binding.autoSave.setChecked(sharedPreferences.getBoolean(autoSave, false));
+        if (binding.autoSave.isChecked()) binding.content.setText(sharedPreferences.getString(CONTENT, null));
+        else binding.content.setText(null);
         setColorSpan();
         request();
 
         binding.play.setVisibility(View.VISIBLE);
         binding.stop.setVisibility(View.GONE);
         binding.input.setVisibility(View.GONE);
-        binding.content.setText(null);
 
         View.OnClickListener listener = view -> {
             switch (view.getId()) {
@@ -90,9 +98,11 @@ public class MainActivity extends AppCompatActivity implements Check {
                     break;
 
                 case R.id.stop:
-                    binding.play.setVisibility(View.VISIBLE);
-                    binding.stop.setVisibility(View.GONE);
-                    binding.input.setVisibility(View.GONE);
+                    runOnUiThread(() -> {
+                        binding.play.setVisibility(View.VISIBLE);
+                        binding.stop.setVisibility(View.GONE);
+                        binding.input.setVisibility(View.GONE);
+                    });
                     break;
 
                 case R.id.thisSave:
@@ -147,6 +157,11 @@ public class MainActivity extends AppCompatActivity implements Check {
         binding.thisLoad.setOnClickListener(listener);
         binding.loadFile.setOnClickListener(listener);
         binding.downloadFile.setOnClickListener(listener);
+
+        binding.autoSave.setOnCheckedChangeListener((compoundButton, b) -> {
+            editor.putBoolean(autoSave, b);
+            editor.apply();
+        });
     }
 
     private List<String> extensionFilter(File folder) {
@@ -249,7 +264,13 @@ public class MainActivity extends AppCompatActivity implements Check {
             private final ColorScheme[] schemes = {printScheme, varScheme, bool1Scheme, bool2Scheme};
 
             @Override public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
-            @Override public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+            @Override public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (binding.autoSave.isChecked()) {
+                    String total = binding.content.getText().toString();
+                    editor.putString(CONTENT, total);
+                    editor.apply();
+                }
+            }
             @Override public void afterTextChanged(Editable editable) {
                 removeSpans(editable);
                 for (ColorScheme scheme : schemes) {
