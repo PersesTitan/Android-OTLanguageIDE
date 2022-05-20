@@ -1,6 +1,9 @@
 package com.example.android_otlanguageide.activity.variable;
 
 import android.os.Build;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.view.View;
 
 import androidx.annotation.RequiresApi;
 
@@ -11,7 +14,6 @@ import com.example.android_otlanguageide.setting.Setting;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class BooleanP extends Setting implements Check, VariableWork {
-
     private static final String SPECIFIED = "ㅇㅂㅇ";
 
     @Override
@@ -22,13 +24,15 @@ public class BooleanP extends Setting implements Check, VariableWork {
     @Override
     public void start(String line) {
         KeyValueItem keyValue = setKeyValue(SPECIFIED, line);
-        String key = keyValue.getKey();
-        String value = keyValue.getValue();
-        value = value.replace("ㅇㅇ", "true");
-        value = value.replace("ㄴㄴ", "false");
-        value = value.replace(" ", "");
-        BM.put(key, change(value));
-        set.add(key);
+        if (Setting.check(keyValue, errorMessage)) {
+            String key = keyValue.getKey();
+            String value = keyValue.getValue();
+            value = value.replace("ㅇㅇ", "true");
+            value = value.replace("ㄴㄴ", "false");
+            value = value.replace(" ", "");
+            BM.put(key, change(value));
+            set.add(key);
+        }
     }
 
     /**

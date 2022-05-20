@@ -24,11 +24,13 @@ public class StringP extends Setting implements Check, VariableWork {
      * @throws Exception 변수를 찾을 수 없을 시 에러 발생
      */
     @Override
-    public void start(String line) throws Exception {
+    public void start(String line) {
         KeyValueItem keyValue = setKeyValue(SPECIFIED, line);
-        String key = keyValue.getKey();
-        String value = keyValue.getValue();
-        SM.put(key, value);
-        set.add(key);
+        if (Setting.check(keyValue, errorMessage)) {
+            String key = keyValue.getKey();
+            String value = keyValue.getValue();
+            SM.put(key, value);
+            set.add(key);
+        }
     }
 }

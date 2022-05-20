@@ -6,18 +6,12 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 
-import com.example.android_otlanguageide.MainActivity;
 import com.example.android_otlanguageide.activity.item.Check;
-import com.example.android_otlanguageide.databinding.ActivityMainBinding;
 import com.example.android_otlanguageide.setting.Setting;
-import com.example.android_otlanguageide.setting.TextSetting;
-
-import java.util.Scanner;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class ScannerP extends Setting implements Check {
@@ -50,7 +44,7 @@ public class ScannerP extends Setting implements Check {
 
         threadItem.start();
 
-        line = line.replaceFirst(SPECIFIED, textSetting.getText(binding.input));
+        line = line.replaceFirst(SPECIFIED, binding.input.getText().toString());
         if (check(line)) return start(line);
         else return line;
     }

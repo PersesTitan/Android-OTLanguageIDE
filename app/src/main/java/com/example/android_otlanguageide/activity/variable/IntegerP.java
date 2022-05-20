@@ -20,11 +20,13 @@ public class IntegerP extends Setting implements Check, VariableWork {
     }
 
     @Override
-    public void start(String line) throws Exception {
+    public void start(String line) {
         KeyValueItem keyValue = setKeyValue(SPECIFIED, line);
-        String key = keyValue.getKey();
-        String value = keyValue.getValue();
-        IM.put(key, Integer.valueOf(value));
-        set.add(key);
+        if (Setting.check(keyValue, errorMessage)) {
+            String key = keyValue.getKey();
+            String value = keyValue.getValue();
+            IM.put(key, Integer.valueOf(value));
+            set.add(key);
+        }
     }
 }

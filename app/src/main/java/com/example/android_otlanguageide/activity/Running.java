@@ -21,7 +21,7 @@ public class Running extends Setting {
         //입력 되있는 코드 읽기
         startCheck = true;
         stringBuilder = new StringBuilder();
-        var lines = textSetting.getText(binding.content).split("\\n");
+        var lines = binding.content.getText().toString().split("\\n");
         for (String line : lines) {
             //play 가 보일때 동작 중지
             if (binding.play.getVisibility() == View.VISIBLE) break;
@@ -40,11 +40,24 @@ public class Running extends Setting {
 
         Log.d(TAG, "동작 끝남 : 출력");
         binding.result.setText(stringBuilder.toString());
+        if (binding.stop.getVisibility() == View.VISIBLE) {
+            binding.play.setVisibility(View.VISIBLE);
+            binding.stop.setVisibility(View.GONE);
+        }
     }
 
     private void work(String line, StringBuilder stringBuilder) {
         if (print.check(line)) print.start(line, stringBuilder);
         else if (println.check(line)) println.start(line, stringBuilder);
+        else if (booleanP.check(line)) booleanP.start(line);
+        else if (characterP.check(line)) characterP.start(line);
+        else if (doubleP.check(line)) doubleP.start(line);
+        else if (floatP.check(line)) floatP.start(line);
+        else if (integerP.check(line)) integerP.start(line);
+        else if (longP.check(line)) longP.start(line);
+        else if (stringP.check(line)) stringP.start(line);
+
+
     }
 
     public class ThreadStart extends Thread{

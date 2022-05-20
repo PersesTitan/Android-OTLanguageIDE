@@ -16,7 +16,6 @@ import com.example.android_otlanguageide.activity.variable.IntegerP;
 import com.example.android_otlanguageide.activity.variable.LongP;
 import com.example.android_otlanguageide.activity.variable.StringP;
 import com.example.android_otlanguageide.activity.variable.Variable;
-import com.example.android_otlanguageide.setting.TextSetting;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public interface Check {
@@ -31,7 +30,6 @@ public interface Check {
     StringP stringP = new StringP();
 
     Running running = new Running();
-    TextSetting textSetting = new TextSetting();
     Print print = new Print();
     Println println = new Println();
     ScannerP scannerP = new ScannerP();

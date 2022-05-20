@@ -20,11 +20,13 @@ public class DoubleP extends Setting implements Check, VariableWork {
     }
 
     @Override
-    public void start(String line) throws Exception {
+    public void start(String line) {
         KeyValueItem keyValue = setKeyValue(SPECIFIED, line);
-        String key = keyValue.getKey();
-        String value = keyValue.getValue();
-        DM.put(key, Double.valueOf(value));
-        set.add(key);
+        if(Setting.check(keyValue, errorMessage)) {
+            String key = keyValue.getKey();
+            String value = keyValue.getValue();
+            DM.put(key, Double.valueOf(value));
+            set.add(key);
+        }
     }
 }

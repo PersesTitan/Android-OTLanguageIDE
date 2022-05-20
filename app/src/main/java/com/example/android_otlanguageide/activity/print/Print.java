@@ -21,7 +21,6 @@ public class Print extends Setting implements Check, PrintWork {
     }
 
     @Override
-    @RequiresApi(api = Build.VERSION_CODES.N)
     public void start(String line, StringBuilder id) {
         /* --ㅅㅁㅅ 제거-- */
         int start = line.indexOf(SPECIFIED) + SPECIFIED.length();

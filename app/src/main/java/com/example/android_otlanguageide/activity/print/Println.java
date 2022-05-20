@@ -24,9 +24,8 @@ public class Println extends Setting implements Check, PrintWork {
      * @param id 출력될 값 가져오기
      */
     @Override
-    @RequiresApi(api = Build.VERSION_CODES.N)
     public void start(String line, StringBuilder id) {
-        /* -- ㅆㅁㅆ 제거 -- */
+        /* --- ㅆㅁㅆ 제거 --- */
         int start = line.indexOf(SPECIFIED) + SPECIFIED.length();
         line = line.substring(start);
         if (variable.check(line)) {

@@ -1,5 +1,7 @@
 package com.example.android_otlanguageide;
 
+import static android.content.ContentValues.TAG;
+
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +18,7 @@ import android.text.Spanned;
 import android.text.TextWatcher;
 import android.text.style.CharacterStyle;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -24,7 +27,6 @@ import android.widget.Toast;
 
 import com.example.android_otlanguageide.activity.item.Check;
 import com.example.android_otlanguageide.databinding.ActivityMainBinding;
-import com.example.android_otlanguageide.setting.TextSetting;
 import com.pranavpandey.android.dynamic.toasts.DynamicToast;
 
 import java.io.BufferedReader;
@@ -46,11 +48,9 @@ public class MainActivity extends AppCompatActivity implements Check {
 
     @SuppressLint("StaticFieldLeak")
     public static ActivityMainBinding binding;
-    private final TextSetting textSetting = new TextSetting();
+    public static StringBuilder totalStringBuilder = new StringBuilder();
     private final String CONTENT = "CONTENT";
     final String shared = "file";
-    StringBuilder totalStringBuilder;
-    StringBuilder stringBuilder;
     String total;
 
     @Override
@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements Check {
     @SuppressLint("NonConstantResourceId")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        totalStringBuilder.setLength(0);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -74,10 +75,22 @@ public class MainActivity extends AppCompatActivity implements Check {
         View.OnClickListener listener = view -> {
             switch (view.getId()) {
                 case R.id.play:
-                    binding.stop.setVisibility(View.VISIBLE);
-                    binding.play.setVisibility(View.GONE);
-                    total = textSetting.getText(binding.content);
+                    totalStringBuilder.setLength(0);
+                    runOnUiThread(() -> {
+                        Log.d(TAG, "startA: start");
+                        binding.stop.setVisibility(View.VISIBLE);
+                        binding.play.setVisibility(View.GONE);
+                        Log.d(TAG, "startA: finish");
+                    });
+
+                    Log.d(TAG, "startB: start");
                     running.start();
+                    Log.d(TAG, "startB: finish");
+
+//                    binding.stop.setVisibility(View.VISIBLE);
+//                    binding.play.setVisibility(View.GONE);
+//                    total = textSetting.getText(binding.content);
+//                    running.start();
                     break;
 
                 case R.id.stop:
@@ -87,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements Check {
                     break;
 
                 case R.id.thisSave:
-                    total = textSetting.getText(binding.content);
+                    total = binding.content.getText().toString();
                     editor.putString(CONTENT, total);
                     if (editor.commit()) okToast("저장되었습니다");
                     else errorToast("오류가 발생하였습니다.");
@@ -118,12 +131,12 @@ public class MainActivity extends AppCompatActivity implements Check {
                     dialog.setMessage("파일 이름을 입력해주세요");
                     dialog.setView(editText);
                     dialog.setPositiveButton("확인", (dialogInterface, i) -> {
-                        String text = textSetting.getText(editText);
+                        String text = editText.getText().toString();
                         if (text.isEmpty()) waringToast("파일이름을 입력해주세요.");
                         else {
-                            stringBuilder = new StringBuilder(textSetting.getText(editText));
+                            var stringBuilder = new StringBuilder(editText.getText().toString());
                             stringBuilder.append(".otl");
-                            createFile(stringBuilder.toString(), textSetting.getText(binding.content));
+                            createFile(stringBuilder.toString(), binding.content.getText().toString());
                         }
                     }).setNegativeButton("취소", (dialogInterface, i) -> { });
                     dialog.show();
@@ -160,7 +173,7 @@ public class MainActivity extends AppCompatActivity implements Check {
     }
 
     private void readFiles(List<String> list) {
-        totalStringBuilder = new StringBuilder();
+        totalStringBuilder.setLength(0);
         var size = list.size();
         String[] items = new String[size];
         for (int i = 0; i < list.size(); i++) {
