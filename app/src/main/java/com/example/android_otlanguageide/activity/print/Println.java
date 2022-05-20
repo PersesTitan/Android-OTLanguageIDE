@@ -20,6 +20,7 @@ public class Println extends Setting implements Check, PrintWork {
     }
 
     /**
+     * <p>줄바꿈이 들어가는 출력</p>
      * @param line 1줄 받아오기
      * @param id 출력될 값 가져오기
      */

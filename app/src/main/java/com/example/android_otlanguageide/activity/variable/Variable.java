@@ -24,6 +24,7 @@ import java.util.regex.Pattern;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class Variable extends Setting implements Check {
+    // :[한국어 or 영어 or 숫자][공백] 형태
     private final String text = ":([ㄱ-ㅎㅏ-ㅣ가-힣]|\\w)\\b";
     private final Pattern pattern = Pattern.compile(text);
 

@@ -24,9 +24,8 @@ import org.jetbrains.annotations.NotNull;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class Setting extends MainActivity implements Check {
-    public static final ForegroundColorSpan errorColor = new ForegroundColorSpan(Color.RED);
-    public static final int errorSpan = Spannable.SPAN_EXCLUSIVE_INCLUSIVE;
-    /*===========================================*/
+    private static final ForegroundColorSpan errorColor = new ForegroundColorSpan(Color.RED);
+    private static final int errorSpan = Spannable.SPAN_EXCLUSIVE_INCLUSIVE;
     //n번째 위치와 라인의 값을 저장하는 곳
     //변수 이름 저장하는 장소
     public static final Map<Integer, String> idLine = new HashMap<>();
@@ -38,6 +37,18 @@ public class Setting extends MainActivity implements Check {
     public static final Map<String, Character> CM = new HashMap<>();
     public static final Map<String, Float> FM = new HashMap<>();
     public static final Map<String, Double> DM = new HashMap<>();
+
+    public void clearVar() {
+        set.clear();
+        IM.clear();
+        LM.clear();
+        BM.clear();
+        SM.clear();
+        CM.clear();
+        FM.clear();
+        DM.clear();
+        idLine.clear();
+    }
 
     /**
      * @param SPECIFIED 타입 받아오기
@@ -58,7 +69,6 @@ public class Setting extends MainActivity implements Check {
      * @param word key 값을 받아옴
      * @return 변수에 저장된 값을 반환함
      */
-    @RequiresApi(api = Build.VERSION_CODES.N)
     protected String checkValue(@NotNull String word) {
         if (BM.containsKey(word)) return BM.get(word) ? "ㅇㅇ" : "ㄴㄴ";
         else if (CM.containsKey(word)) return Objects.requireNonNull(CM.get(word)).toString();

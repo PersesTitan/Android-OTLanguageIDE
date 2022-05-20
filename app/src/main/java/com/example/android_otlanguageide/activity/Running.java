@@ -13,14 +13,15 @@ import com.example.android_otlanguageide.setting.Setting;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class Running extends Setting {
     protected boolean startCheck = false;
-    StringBuilder stringBuilder;
 
     public void start() {
         //startCheck = 시작
         //stringBuilder = 출력 값 저장되있는 곳
         //입력 되있는 코드 읽기
         startCheck = true;
-        stringBuilder = new StringBuilder();
+        //초기화 과정
+        clearVar();
+        totalStringBuilder.setLength(0);
         var lines = binding.content.getText().toString().split("\\n");
         for (String line : lines) {
             //play 가 보일때 동작 중지
@@ -33,13 +34,18 @@ public class Running extends Setting {
                         threadStart.wait();
                     }catch(InterruptedException ignored){ }
                     Log.d(TAG, "루프 끝남");
-                    work(line, stringBuilder);
+                    work(line, totalStringBuilder);
                 }
-            } else work(line, stringBuilder);
+            } else work(line, totalStringBuilder);
         }
 
         Log.d(TAG, "동작 끝남 : 출력");
-        binding.result.setText(stringBuilder.toString());
+
+        System.out.println("============================");
+        Log.d(TAG, "start: " + totalStringBuilder.toString());
+        System.out.println("============================");
+
+        binding.result.setText(totalStringBuilder.toString());
         if (binding.stop.getVisibility() == View.VISIBLE) {
             binding.play.setVisibility(View.VISIBLE);
             binding.stop.setVisibility(View.GONE);
@@ -47,7 +53,6 @@ public class Running extends Setting {
     }
 
     private void work(String line, StringBuilder stringBuilder) {
-        System.out.println("======================="+set);
         if (variable.check(line)) line = variable.getVar(line);
 
         if (print.check(line)) print.start(line, stringBuilder);
@@ -59,7 +64,6 @@ public class Running extends Setting {
         else if (integerP.check(line)) integerP.start(line);
         else if (longP.check(line)) longP.start(line);
         else if (stringP.check(line)) stringP.start(line);
-        System.out.println("======================="+set);
     }
 
     public class ThreadStart extends Thread{
