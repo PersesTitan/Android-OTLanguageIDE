@@ -11,7 +11,6 @@ import com.example.android_otlanguageide.setting.Setting;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class CharacterP extends Setting implements Check, VariableWork {
-
     private static final String SPECIFIED = "ㅇㄱㅇ";
 
     @Override

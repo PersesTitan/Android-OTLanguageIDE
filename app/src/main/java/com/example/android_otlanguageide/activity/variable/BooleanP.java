@@ -1,6 +1,7 @@
 package com.example.android_otlanguageide.activity.variable;
 
 import android.os.Build;
+import android.service.autofill.FieldClassification;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.view.View;

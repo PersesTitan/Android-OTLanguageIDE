@@ -1,8 +1,5 @@
 package com.example.android_otlanguageide.setting;
 
-import static android.content.ContentValues.TAG;
-
-import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Build;
 import android.text.Spannable;
@@ -14,21 +11,8 @@ import android.view.View;
 import androidx.annotation.RequiresApi;
 
 import com.example.android_otlanguageide.MainActivity;
-import com.example.android_otlanguageide.activity.Running;
 import com.example.android_otlanguageide.activity.item.Check;
 import com.example.android_otlanguageide.activity.item.KeyValueItem;
-import com.example.android_otlanguageide.activity.print.Print;
-import com.example.android_otlanguageide.activity.print.Println;
-import com.example.android_otlanguageide.activity.print.ScannerP;
-import com.example.android_otlanguageide.activity.variable.BooleanP;
-import com.example.android_otlanguageide.activity.variable.CharacterP;
-import com.example.android_otlanguageide.activity.variable.DoubleP;
-import com.example.android_otlanguageide.activity.variable.FloatP;
-import com.example.android_otlanguageide.activity.variable.IntegerP;
-import com.example.android_otlanguageide.activity.variable.LongP;
-import com.example.android_otlanguageide.activity.variable.StringP;
-import com.example.android_otlanguageide.activity.variable.Variable;
-import com.example.android_otlanguageide.databinding.ActivityMainBinding;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -66,7 +50,7 @@ public class Setting extends MainActivity implements Check {
         String key = line.substring(start, end).trim();
         if (set.contains(key)) return null;
         String value = line.substring(end+1);
-        value = scannerP.start(value);
+        if (check(value)) value = scannerP.start(value);
         return new KeyValueItem(key, value);
     }
 
@@ -96,8 +80,8 @@ public class Setting extends MainActivity implements Check {
             binding.play.setVisibility(View.VISIBLE);
             binding.stop.setVisibility(View.GONE);
             String total = totalStringBuilder.toString();
-            int end = total.lastIndexOf(message);
-            int start = end - message.length();
+            int start = total.lastIndexOf(message);
+            int end = start + total.length();
             var builder = new SpannableStringBuilder(message);
             builder.setSpan(errorColor, start, end, errorSpan);
             binding.result.setText(builder);

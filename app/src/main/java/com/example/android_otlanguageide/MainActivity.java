@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 import com.example.android_otlanguageide.activity.item.Check;
 import com.example.android_otlanguageide.databinding.ActivityMainBinding;
+import com.example.android_otlanguageide.setting.Setting;
 import com.pranavpandey.android.dynamic.toasts.DynamicToast;
 
 import java.io.BufferedReader;
@@ -46,9 +47,9 @@ import lombok.AllArgsConstructor;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class MainActivity extends AppCompatActivity implements Check {
 
+    public static StringBuilder totalStringBuilder = new StringBuilder();
     @SuppressLint("StaticFieldLeak")
     public static ActivityMainBinding binding;
-    public static StringBuilder totalStringBuilder = new StringBuilder();
     private final String CONTENT = "CONTENT";
     final String shared = "file";
     String total;
@@ -86,11 +87,6 @@ public class MainActivity extends AppCompatActivity implements Check {
                     Log.d(TAG, "startB: start");
                     running.start();
                     Log.d(TAG, "startB: finish");
-
-//                    binding.stop.setVisibility(View.VISIBLE);
-//                    binding.play.setVisibility(View.GONE);
-//                    total = textSetting.getText(binding.content);
-//                    running.start();
                     break;
 
                 case R.id.stop:
@@ -133,11 +129,8 @@ public class MainActivity extends AppCompatActivity implements Check {
                     dialog.setPositiveButton("확인", (dialogInterface, i) -> {
                         String text = editText.getText().toString();
                         if (text.isEmpty()) waringToast("파일이름을 입력해주세요.");
-                        else {
-                            var stringBuilder = new StringBuilder(editText.getText().toString());
-                            stringBuilder.append(".otl");
-                            createFile(stringBuilder.toString(), binding.content.getText().toString());
-                        }
+                        else createFile(editText.getText().toString()
+                                + ".otl", binding.content.getText().toString());
                     }).setNegativeButton("취소", (dialogInterface, i) -> { });
                     dialog.show();
                     break;
@@ -222,22 +215,33 @@ public class MainActivity extends AppCompatActivity implements Check {
     }
 
     /**
+     * print <br>
+     * - ㅅㅁㅅ ㅆㅁㅆ 는 첫 부분일때만 허용 <br>
+     * 단, 공백은 허용 <br>
+     * - ㅅㅇㅅ 는 위치 상관 없음 <br>
+     * var <br>
+     * - ㅇㅈㅇ ㅇㅉㅇ ㅇㅂㅇ ㅇㅁㅇ ㅇㄱㅇ ㅇㅅㅇ ㅇㅆㅇ 는
+     * 모두 처음 시작 할때만 <br>
+     * 단, 공백은 허용 <br>
+     * bool <br>
+     * - ㅇㅇ ㄴㄴ ㄸ ㄲ ^^ ?ㅅ? 는 위치 상과 없음 </br>
      * 입력 받을 때마다 색상 변경
      */
     private void setColorSpan() {
         binding.content.addTextChangedListener(new TextWatcher() {
             private final String print = "\\n\\s*(ㅅㅁㅅ|ㅆㅁㅆ)\\b|^\\s*(ㅅㅁㅅ|ㅆㅁㅆ)\\s+|\\b(ㅅㅇㅅ)\\b";
-            private final String var = "\\b(ㅇㅈㅇ|ㅇㅉㅇ|ㅇㅂㅇ|ㅇㅁㅇ|ㅇㄱㅇ|ㅇㅅㅇ|ㅇㅆㅇ)\\b";
+            private final String var = "\\n\\s*(ㅇㅈㅇ|ㅇㅉㅇ|ㅇㅂㅇ|ㅇㅁㅇ|ㅇㄱㅇ|ㅇㅅㅇ|ㅇㅆㅇ)\\b|" +
+                    "^\\s*(ㅇㅈㅇ|ㅇㅉㅇ|ㅇㅂㅇ|ㅇㅁㅇ|ㅇㄱㅇ|ㅇㅅㅇ|ㅇㅆㅇ)\\s+";
             private final String bool1 = "\\b(ㅇㅇ|ㄴㄴ)\\b";
             private final String bool2 = "\\b(ㄸ|ㄲ|\\^\\^|\\?ㅅ\\?)\\b";
             private final int printColor = Color.parseColor("#006400"); // 검은색 초록색
             private final int varColor = Color.parseColor("#9370DB"); //연보라색
             private final int boolColor1 = Color.parseColor("#FF8C00"); //검은 주황
             private final int boolColor2 = Color.parseColor("#00B8D4"); //파란색
-            private final Pattern printPattern = Pattern.compile((print));
-            private final Pattern varPattern = Pattern.compile((var));
-            private final Pattern bool1Pattern = Pattern.compile((bool1));
-            private final Pattern bool2Pattern = Pattern.compile((bool2));
+            private final Pattern printPattern = Pattern.compile(print);
+            private final Pattern varPattern = Pattern.compile(var);
+            private final Pattern bool1Pattern = Pattern.compile(bool1);
+            private final Pattern bool2Pattern = Pattern.compile(bool2);
             private final ColorScheme printScheme = new ColorScheme(printPattern, printColor);
             private final ColorScheme varScheme = new ColorScheme(varPattern, varColor);
             private final ColorScheme bool1Scheme = new ColorScheme(bool1Pattern, boolColor1);

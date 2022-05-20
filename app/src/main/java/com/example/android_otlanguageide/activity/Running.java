@@ -47,6 +47,9 @@ public class Running extends Setting {
     }
 
     private void work(String line, StringBuilder stringBuilder) {
+        System.out.println("======================="+set);
+        if (variable.check(line)) line = variable.getVar(line);
+
         if (print.check(line)) print.start(line, stringBuilder);
         else if (println.check(line)) println.start(line, stringBuilder);
         else if (booleanP.check(line)) booleanP.start(line);
@@ -56,8 +59,7 @@ public class Running extends Setting {
         else if (integerP.check(line)) integerP.start(line);
         else if (longP.check(line)) longP.start(line);
         else if (stringP.check(line)) stringP.start(line);
-
-
+        System.out.println("======================="+set);
     }
 
     public class ThreadStart extends Thread{
