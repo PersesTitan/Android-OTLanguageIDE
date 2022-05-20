@@ -2,11 +2,16 @@
 모바일 버전의 [OTLanguage](https://github.com/PersesTitan/OTLanguage)언어의 개발통합환경 입니다.
 </br></br></br>
 
+![](https://github.com/PersesTitan/Android-OTLanguageIDE/blob/master/image/baner.png)
+
 # 목차
   - [버튼 설명](https://github.com/PersesTitan/Android-OTLanguageIDE/edit/master/README.md#%EB%B2%84%ED%8A%BC-%EC%84%A4%EB%AA%85)
 
 ## 버튼 설명
-
+<details>
+<summary>버튼 설명(누르면 펼쳐집니다.)</summary>
+<div markdown="1">
+ 
 ### 수동 저장 - 현재 내용을 저장하는 버튼
 ![](https://github.com/PersesTitan/Android-OTLanguageIDE/blob/master/image/1.jpeg)
 </br></br></br>
@@ -27,3 +32,10 @@
 </br></br></br>
 ### 플레이 - 코드를 실행시키는 버튼 (동작중에는 멈춤 버튼으로 표시됨)
 ![](https://github.com/PersesTitan/Android-OTLanguageIDE/blob/master/image/7.jpeg)
+
+</div>
+</details>
+
+![](https://img.shields.io/badge/ㅅㅁㅅ-006400?style=flat-square&logoColor=white)
+![](https://img.shields.io/badge/ㅆㅁㅆ-006400?style=flat-square&logoColor=white)
+![](https://img.shields.io/badge/ㅅㅇㅅ-006400?style=flat-square&logoColor=white)
