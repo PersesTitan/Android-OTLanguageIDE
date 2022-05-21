@@ -36,6 +36,24 @@
 </div>
 </details>
 
-![](https://img.shields.io/badge/ㅅㅁㅅ-006400?style=flat-square&logoColor=white)
+## IDE 서포트
+
+<img src="https://img.shields.io/badge/ㅅㅁㅅ-006400?style=flat-square&logoColor=black">
+
+![](https://img.shields.io/badge/ㅅㅁㅅ-006400?style=flat-square&logoColor=black)
 ![](https://img.shields.io/badge/ㅆㅁㅆ-006400?style=flat-square&logoColor=white)
 ![](https://img.shields.io/badge/ㅅㅇㅅ-006400?style=flat-square&logoColor=white)
+
+![](https://img.shields.io/badge/ㅇㅈㅇ-9370DB?style=flat-square&logoColor=black)
+![](https://img.shields.io/badge/ㅇㅉㅇ-9370DB?style=flat-square&logoColor=white)
+![](https://img.shields.io/badge/ㅇㅂㅇ-9370DB?style=flat-square&logoColor=white)
+![](https://img.shields.io/badge/ㅇㅁㅇ-9370DB?style=flat-square&logoColor=white)
+![](https://img.shields.io/badge/ㅇㄱㅇ-9370DB?style=flat-square&logoColor=white)
+![](https://img.shields.io/badge/ㅇㅅㅇ-9370DB?style=flat-square&logoColor=white)
+![](https://img.shields.io/badge/ㅇㅆㅇ-9370DB?style=flat-square&logoColor=white)
+
+![](https://img.shields.io/badge/ㅇㅇ-FF8C00?style=flat-square&logoColor=white)
+![](https://img.shields.io/badge/ㄴㄴ-FF8C00?style=flat-square&logoColor=white)
+
+![](https://img.shields.io/badge/ㄸ-00B8D4?style=flat-square&logoColor=white)
+![](https://img.shields.io/badge/ㄲ-00B8D4?style=flat-square&logoColor=white)
