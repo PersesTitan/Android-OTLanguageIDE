@@ -6,6 +6,7 @@
 
 # 목차
   - [버튼 설명](https://github.com/PersesTitan/Android-OTLanguageIDE/edit/master/README.md#%EB%B2%84%ED%8A%BC-%EC%84%A4%EB%AA%85)
+  - [IDE 서포트](https://github.com/PersesTitan/Android-OTLanguageIDE/edit/master/README.md#ide-%EC%84%9C%ED%8F%AC%ED%8A%B8)
 
 ## 버튼 설명
 <details>
@@ -38,12 +39,17 @@
 
 ## IDE 서포트
 
-<img src="https://img.shields.io/badge/ㅅㅁㅅ-006400?style=flat-square&logoColor=black">
-
+<details>
+<summary>IDE 서포트(누르면 펼쳐집니다.)</summary>
+<div markdown="1">
+</br>
+  
+### 출력 & 입력 (초록색)
 ![](https://img.shields.io/badge/ㅅㅁㅅ-006400?style=flat-square&logoColor=black)
 ![](https://img.shields.io/badge/ㅆㅁㅆ-006400?style=flat-square&logoColor=white)
 ![](https://img.shields.io/badge/ㅅㅇㅅ-006400?style=flat-square&logoColor=white)
 
+### 변수 타입 (연보라색)
 ![](https://img.shields.io/badge/ㅇㅈㅇ-9370DB?style=flat-square&logoColor=black)
 ![](https://img.shields.io/badge/ㅇㅉㅇ-9370DB?style=flat-square&logoColor=white)
 ![](https://img.shields.io/badge/ㅇㅂㅇ-9370DB?style=flat-square&logoColor=white)
@@ -52,8 +58,14 @@
 ![](https://img.shields.io/badge/ㅇㅅㅇ-9370DB?style=flat-square&logoColor=white)
 ![](https://img.shields.io/badge/ㅇㅆㅇ-9370DB?style=flat-square&logoColor=white)
 
+### 블린형 (주황색)
 ![](https://img.shields.io/badge/ㅇㅇ-FF8C00?style=flat-square&logoColor=white)
 ![](https://img.shields.io/badge/ㄴㄴ-FF8C00?style=flat-square&logoColor=white)
 
+### AND & OR (하늘색)
 ![](https://img.shields.io/badge/ㄸ-00B8D4?style=flat-square&logoColor=white)
 ![](https://img.shields.io/badge/ㄲ-00B8D4?style=flat-square&logoColor=white)
+
+</div>
+</details>
+
