@@ -19,14 +19,14 @@ public class Running extends Setting {
             binding.stop.setVisibility(View.VISIBLE);
             binding.play.setVisibility(View.GONE);
         });
-        //동작을 실해아는 쓰레드
+        //동작을 실행하는 쓰레드
         new Thread(() -> {
             for (String line : lines) {
                 if (binding.stop.getVisibility() == View.GONE) break;
+                if (variable.check(line)) line = variable.getVar(line);
                 if (scannerP.check(line)) {
                     line = scannerP.start(line);
                     while (scannerCheck) {
-//                        if (binding.stop.getVisibility() != View.GONE) break loop;
                         try {
                             Thread.sleep(100);
                         } catch (InterruptedException ignored) {}
@@ -45,22 +45,8 @@ public class Running extends Setting {
         }).start();
     }
 
-    private static final class InputThread extends Thread implements Runnable {
-        @Override
-        public void run() {
-            // 입력이 끝나거나 stop 이 보일때만 동작함
-            while (scannerCheck && binding.stop.getVisibility() == View.VISIBLE) {
-                try {
-                    sleep(100);
-                } catch (InterruptedException ignored) {}
-            }
-        }
-    }
-
     private void work(String line) {
         if (line != null && !line.isEmpty()) {
-            if (variable.check(line)) line = variable.getVar(line);
-
             if (print.check(line)) print.start(line, totalStringBuilder);
             else if (println.check(line)) println.start(line, totalStringBuilder);
             else if (booleanP.check(line)) booleanP.start(line);

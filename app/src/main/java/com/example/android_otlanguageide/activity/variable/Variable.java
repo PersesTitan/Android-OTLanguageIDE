@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class Variable extends Setting implements Check {
@@ -40,7 +41,7 @@ public class Variable extends Setting implements Check {
             int end = copyLine.indexOf(" ");
             String key = copyLine.substring(1, end);
             if (set.contains(key)) {
-                String value = ":"+key+" ";
+                String value = ":"+key;
                 line = line.replaceFirst(value, checkValue(key));
             }
             count++;
@@ -55,13 +56,11 @@ public class Variable extends Setting implements Check {
     @Override
     public boolean check(String line) {
         if (line == null || line.isEmpty()) return false;
-        Matcher matcher = pattern.matcher(line);
-        boolean bool = matcher.find();
+        boolean bool = pattern.matcher(line).find();
         var lines = line.split(" ");
-        bool = bool && new ArrayList<>(Arrays.asList(lines)).stream()
+        return bool || Arrays.stream(lines)
                 .filter(v -> !v.isEmpty())
                 .filter(v -> v.startsWith(":"))
-                .anyMatch(set::contains);
-        return bool;
+                .anyMatch(v -> set.contains(v.substring(1)));
     }
 }

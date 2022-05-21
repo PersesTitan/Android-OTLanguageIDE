@@ -38,7 +38,6 @@ public class ScannerP extends Setting implements Check {
         });
 
         while (scannerCheck) {
-//            if (binding.stop.getVisibility() != View.GONE) return null;
             try {
                 Thread.sleep(100);
             } catch (InterruptedException ignored) {}
