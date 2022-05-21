@@ -56,16 +56,10 @@ public class Variable extends Setting implements Check {
     public boolean check(String line) {
         Matcher matcher = pattern.matcher(line);
         boolean bool = matcher.find();
-
-        Log.d(TAG, "check: =======================================");
-        Log.d(TAG, "check: " + line);
-        Log.d(TAG, "check: " + bool);
-
         var lines = line.split(" ");
         bool = bool && new ArrayList<>(Arrays.asList(lines)).stream()
                 .filter(v -> !v.isEmpty())
                 .anyMatch(v -> v.startsWith(":"));
-        Log.d(TAG, "line: " + line + " check: " + bool);
         return bool;
     }
 }

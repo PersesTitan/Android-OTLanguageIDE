@@ -1,24 +1,20 @@
 package com.example.android_otlanguageide.activity.print;
 
-import android.content.Context;
 import android.os.Build;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 
 import com.example.android_otlanguageide.activity.item.Check;
 import com.example.android_otlanguageide.setting.Setting;
 
+import java.util.regex.Pattern;
+
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class ScannerP extends Setting implements Check {
-    public volatile boolean checkBool = false;
-
     private static final String SPECIFIED = "ㅅㅇㅅ";
-    final ThreadItem threadItem = new ThreadItem();
+    private final String patternText = "\\b(ㅅㅇㅅ)\\b";
+    private final Pattern pattern = Pattern.compile(patternText);
 
     /**
      * ex) ㅇㅅㅇ 11:ㅅㅇㅅ
@@ -27,7 +23,7 @@ public class ScannerP extends Setting implements Check {
      */
     @Override
     public boolean check(String line) {
-        return line.contains(SPECIFIED);
+        return pattern.matcher(line).find();
     }
 
     /**
@@ -35,44 +31,25 @@ public class ScannerP extends Setting implements Check {
      * @return 입력한 값 받아오기
      */
     public String start(String line) {
-        //확인 버튼 클릭시
-        checkBool = true;
-        var editText = binding.input;
-        editText.setText(null);
-        editText.setVisibility(View.VISIBLE);
-        editText.setOnEditorActionListener(new DoneOnEditorActionListener());
+        scannerCheck = true;
+        runOnUiThread(() -> {
+            binding.input.setText(null);
+            binding.input.setVisibility(View.VISIBLE);
+        });
 
-        threadItem.start();
-
-        line = line.replaceFirst(SPECIFIED, binding.input.getText().toString());
-        if (check(line)) return start(line);
-        else return line;
-    }
-
-    private class ThreadItem extends Thread {
-        @Override
-        public void run() {
-            synchronized(this){
-                while (checkBool) {
-                    try {
-                        Thread.sleep(1);
-                    } catch (InterruptedException ignored) { }
-                }
-            }
+        while (scannerCheck) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException ignored) {}
         }
-    }
 
-    private class DoneOnEditorActionListener implements TextView.OnEditorActionListener {
-        @Override
-        public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                var imm = (InputMethodManager) textView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(textView.getWindowToken(), 0);
-                checkBool = false;
-                return true;
-            }
-            checkBool = true;
-            return false;
+        System.out.println(line);
+        line = line.replaceFirst(SPECIFIED, binding.input.getText().toString());
+        System.out.println(line);
+        if (check(line)) return start(line);
+        else {
+            runOnUiThread(() -> binding.input.setVisibility(View.GONE));
+            return line;
         }
     }
 }

@@ -24,6 +24,7 @@ import org.jetbrains.annotations.NotNull;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class Setting extends MainActivity implements Check {
+    public static volatile boolean scannerCheck = true;
     private static final ForegroundColorSpan errorColor = new ForegroundColorSpan(Color.RED);
     private static final int errorSpan = Spannable.SPAN_EXCLUSIVE_INCLUSIVE;
     //n번째 위치와 라인의 값을 저장하는 곳
@@ -39,6 +40,7 @@ public class Setting extends MainActivity implements Check {
     public static final Map<String, Double> DM = new HashMap<>();
 
     public void clearVar() {
+        totalStringBuilder.setLength(0);
         set.clear();
         IM.clear();
         LM.clear();

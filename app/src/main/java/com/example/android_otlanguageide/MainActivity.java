@@ -19,11 +19,14 @@ import android.text.TextWatcher;
 import android.text.style.CharacterStyle;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android_otlanguageide.activity.item.Check;
@@ -69,13 +72,14 @@ public class MainActivity extends AppCompatActivity implements Check {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        request();
+        setColorSpan();
+        binding.input.setOnEditorActionListener(new DoneOnEditorActionListener());
         var sharedPreferences = getSharedPreferences(shared, 0);
         editor = sharedPreferences.edit();
         binding.autoSave.setChecked(sharedPreferences.getBoolean(autoSave, false));
         if (binding.autoSave.isChecked()) binding.content.setText(sharedPreferences.getString(CONTENT, null));
         else binding.content.setText(null);
-        setColorSpan();
-        request();
 
         binding.play.setVisibility(View.VISIBLE);
         binding.stop.setVisibility(View.GONE);
@@ -86,15 +90,10 @@ public class MainActivity extends AppCompatActivity implements Check {
                 case R.id.play:
                     totalStringBuilder.setLength(0);
                     runOnUiThread(() -> {
-                        Log.d(TAG, "startA: start");
                         binding.stop.setVisibility(View.VISIBLE);
                         binding.play.setVisibility(View.GONE);
-                        Log.d(TAG, "startA: finish");
+                        running.start();
                     });
-
-                    Log.d(TAG, "startB: start");
-                    running.start();
-                    Log.d(TAG, "startB: finish");
                     break;
 
                 case R.id.stop:
@@ -326,6 +325,19 @@ public class MainActivity extends AppCompatActivity implements Check {
             input.showSoftInput(binding.content, 0);
             return false;
         });
+    }
+
+    private static class DoneOnEditorActionListener implements TextView.OnEditorActionListener {
+        @Override
+        public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                var imm = (InputMethodManager) textView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(textView.getWindowToken(), 0);
+                Setting.scannerCheck = false;
+                return true;
+            }
+            return false;
+        }
     }
 
     @Override
