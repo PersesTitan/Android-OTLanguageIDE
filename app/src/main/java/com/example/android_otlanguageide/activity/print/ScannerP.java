@@ -34,21 +34,20 @@ public class ScannerP extends Setting implements Check {
         scannerCheck = true;
         runOnUiThread(() -> {
             binding.input.setText(null);
-            binding.input.setVisibility(View.VISIBLE);
+            binding.inputLayout.setVisibility(View.VISIBLE);
         });
 
         while (scannerCheck) {
+//            if (binding.stop.getVisibility() != View.GONE) return null;
             try {
                 Thread.sleep(100);
             } catch (InterruptedException ignored) {}
         }
 
-        System.out.println(line);
         line = line.replaceFirst(SPECIFIED, binding.input.getText().toString());
-        System.out.println(line);
         if (check(line)) return start(line);
         else {
-            runOnUiThread(() -> binding.input.setVisibility(View.GONE));
+            runOnUiThread(() -> binding.inputLayout.setVisibility(View.GONE));
             return line;
         }
     }

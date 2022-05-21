@@ -83,13 +83,14 @@ public class MainActivity extends AppCompatActivity implements Check {
 
         binding.play.setVisibility(View.VISIBLE);
         binding.stop.setVisibility(View.GONE);
-        binding.input.setVisibility(View.GONE);
+        binding.inputLayout.setVisibility(View.GONE);
 
         View.OnClickListener listener = view -> {
             switch (view.getId()) {
                 case R.id.play:
-                    totalStringBuilder.setLength(0);
                     runOnUiThread(() -> {
+                        totalStringBuilder.setLength(0);
+                        binding.result.setText(null);
                         binding.stop.setVisibility(View.VISIBLE);
                         binding.play.setVisibility(View.GONE);
                         running.start();
@@ -97,10 +98,11 @@ public class MainActivity extends AppCompatActivity implements Check {
                     break;
 
                 case R.id.stop:
+                    Setting.scannerCheck = false;
                     runOnUiThread(() -> {
                         binding.play.setVisibility(View.VISIBLE);
                         binding.stop.setVisibility(View.GONE);
-                        binding.input.setVisibility(View.GONE);
+                        binding.inputLayout.setVisibility(View.GONE);
                     });
                     break;
 
@@ -148,6 +150,10 @@ public class MainActivity extends AppCompatActivity implements Check {
                     binding.result.setText(null);
                     break;
 
+                case R.id.done:
+                    Setting.scannerCheck = false;
+                    break;
+
                 default:
                     assert false;
                     break;
@@ -161,6 +167,7 @@ public class MainActivity extends AppCompatActivity implements Check {
         binding.loadFile.setOnClickListener(listener);
         binding.downloadFile.setOnClickListener(listener);
         binding.clear.setOnClickListener(listener);
+        binding.done.setOnClickListener(listener);
 
         binding.autoSave.setOnCheckedChangeListener((compoundButton, b) -> {
             editor.putBoolean(autoSave, b);

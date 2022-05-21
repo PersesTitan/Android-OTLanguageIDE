@@ -26,6 +26,7 @@ public class Running extends Setting {
                 if (scannerP.check(line)) {
                     line = scannerP.start(line);
                     while (scannerCheck) {
+//                        if (binding.stop.getVisibility() != View.GONE) break loop;
                         try {
                             Thread.sleep(100);
                         } catch (InterruptedException ignored) {}
@@ -42,7 +43,6 @@ public class Running extends Setting {
                 }
             });
         }).start();
-
     }
 
     private static final class InputThread extends Thread implements Runnable {
@@ -58,16 +58,19 @@ public class Running extends Setting {
     }
 
     private void work(String line) {
-        if (variable.check(line)) line = variable.getVar(line);
+        if (line != null && !line.isEmpty()) {
+            if (variable.check(line)) line = variable.getVar(line);
 
-        if (print.check(line)) print.start(line, totalStringBuilder);
-        else if (println.check(line)) println.start(line, totalStringBuilder);
-        else if (booleanP.check(line)) booleanP.start(line);
-        else if (characterP.check(line)) characterP.start(line);
-        else if (doubleP.check(line)) doubleP.start(line);
-        else if (floatP.check(line)) floatP.start(line);
-        else if (integerP.check(line)) integerP.start(line);
-        else if (longP.check(line)) longP.start(line);
-        else if (stringP.check(line)) stringP.start(line);
+            if (print.check(line)) print.start(line, totalStringBuilder);
+            else if (println.check(line)) println.start(line, totalStringBuilder);
+            else if (booleanP.check(line)) booleanP.start(line);
+            else if (characterP.check(line)) characterP.start(line);
+            else if (doubleP.check(line)) doubleP.start(line);
+            else if (floatP.check(line)) floatP.start(line);
+            else if (integerP.check(line)) integerP.start(line);
+            else if (longP.check(line)) longP.start(line);
+            else if (stringP.check(line)) stringP.start(line);
+        }
+
     }
 }

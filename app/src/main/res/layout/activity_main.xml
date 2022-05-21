@@ -121,19 +121,38 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"/>
 
-    <EditText
-        android:id="@+id/input"
-        android:imeOptions="actionDone"
-        android:singleLine="true"
-        android:maxLines="1"
+    <LinearLayout
+        android:id="@+id/inputLayout"
         android:visibility="gone"
-        android:padding="8dp"
-        android:textColorHint="@color/white_100"
-        android:textColor="@color/white"
         android:background="@color/blue_black"
-        android:hint="@string/input"
+        android:orientation="horizontal"
+        android:gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:layout_weight="1"
+            android:id="@+id/input"
+            android:imeOptions="actionDone"
+            android:singleLine="true"
+            android:maxLines="1"
+            android:padding="8dp"
+            android:textColorHint="@color/white_100"
+            android:textColor="@color/white"
+            android:background="@color/blue_black"
+            android:hint="@string/input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/done"
+            android:text="완료"
+            android:textColor="@color/white"
+            android:background="@color/blue_black"
+            android:layout_weight="7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
 
     <ScrollView
         android:id="@+id/scrollView1"

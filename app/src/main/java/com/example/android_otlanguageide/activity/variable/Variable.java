@@ -54,12 +54,14 @@ public class Variable extends Setting implements Check {
      */
     @Override
     public boolean check(String line) {
+        if (line == null || line.isEmpty()) return false;
         Matcher matcher = pattern.matcher(line);
         boolean bool = matcher.find();
         var lines = line.split(" ");
         bool = bool && new ArrayList<>(Arrays.asList(lines)).stream()
                 .filter(v -> !v.isEmpty())
-                .anyMatch(v -> v.startsWith(":"));
+                .filter(v -> v.startsWith(":"))
+                .anyMatch(set::contains);
         return bool;
     }
 }
