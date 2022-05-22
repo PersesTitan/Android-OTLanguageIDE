@@ -249,11 +249,11 @@ public class MainActivity extends AppCompatActivity implements Check {
      */
     private void setColorSpan() {
         binding.content.addTextChangedListener(new TextWatcher() {
-            private final String print = "\\n\\s*(ㅅㅁㅅ|ㅆㅁㅆ)\\b|^\\s*(ㅅㅁㅅ|ㅆㅁㅆ)\\s+|\\b(ㅅㅇㅅ)\\b";
-            private final String var = "\\n\\s*(ㅇㅈㅇ|ㅇㅉㅇ|ㅇㅂㅇ|ㅇㅁㅇ|ㅇㄱㅇ|ㅇㅅㅇ|ㅇㅆㅇ)\\b|" +
+            private final String print = "\\n\\s*(ㅅㅁㅅ|ㅆㅁㅆ)\\s|^\\s*(ㅅㅁㅅ|ㅆㅁㅆ)\\s+|\\s(ㅅㅇㅅ)\\s";
+            private final String var = "\\n\\s*(ㅇㅈㅇ|ㅇㅉㅇ|ㅇㅂㅇ|ㅇㅁㅇ|ㅇㄱㅇ|ㅇㅅㅇ|ㅇㅆㅇ)\\s|" +
                     "^\\s*(ㅇㅈㅇ|ㅇㅉㅇ|ㅇㅂㅇ|ㅇㅁㅇ|ㅇㄱㅇ|ㅇㅅㅇ|ㅇㅆㅇ)\\s+";
-            private final String bool1 = "\\b(ㅇㅇ|ㄴㄴ)\\b";
-            private final String bool2 = "\\b(ㄸ|ㄲ|\\^\\^|\\?ㅅ\\?)\\b";
+            private final String bool1 = "\\s(ㅇㅇ|ㄴㄴ)\\s";
+            private final String bool2 = "\\s(ㄸ|ㄲ|\\^\\^|\\?ㅅ\\?)\\s";
             private final int printColor = Color.parseColor("#006400"); // 검은색 초록색
             private final int varColor = Color.parseColor("#9370DB"); //연보라색
             private final int boolColor1 = Color.parseColor("#FF8C00"); //검은 주황

@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class ScannerP extends Setting implements Check {
     private static final String SPECIFIED = "ㅅㅇㅅ";
-    private final String patternText = "\\b(ㅅㅇㅅ)\\b";
+    private final String patternText = "\\s(ㅅㅇㅅ)\\s";
     private final Pattern pattern = Pattern.compile(patternText);
 
     /**
