@@ -9,14 +9,17 @@ import com.example.android_otlanguageide.activity.item.KeyValueItem;
 import com.example.android_otlanguageide.activity.item.VariableWork;
 import com.example.android_otlanguageide.setting.Setting;
 
+import java.util.regex.Pattern;
+
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class LongP extends Setting implements Check, VariableWork {
-
     private static final String SPECIFIED = "ㅇㅉㅇ";
+    private final String patternText = "\\n\\s*ㅇㅉㅇ\\s|^\\s*ㅇㅉㅇ\\s";
+    private final Pattern pattern = Pattern.compile(patternText);
 
     @Override
     public boolean check(String line) {
-        return line.trim().startsWith(SPECIFIED);
+        return pattern.matcher(line).find();
     }
 
     @Override

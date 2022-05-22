@@ -9,14 +9,18 @@ import com.example.android_otlanguageide.activity.item.PrintWork;
 import com.example.android_otlanguageide.setting.Setting;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class Println extends Setting implements Check, PrintWork {
     private static final String SPECIFIED = "ㅆㅁㅆ";
+    private final String patternText = "\\n\\s*ㅆㅁㅆ\\s|^\\s*ㅆㅁㅆ\\s";
+    private final Pattern pattern = Pattern.compile(patternText);
 
     @Override
     public boolean check(String line) {
-        return line.trim().startsWith(SPECIFIED);
+        return pattern.matcher(line).find();
     }
 
     /**
