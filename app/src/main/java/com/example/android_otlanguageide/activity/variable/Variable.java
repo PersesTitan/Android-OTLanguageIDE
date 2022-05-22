@@ -39,6 +39,7 @@ public class Variable extends Setting implements Check {
         while((begin = line.indexOf(":", count)) != -1) {
             String copyLine = line.substring(begin);
             int end = copyLine.indexOf(" ");
+            if (end == -1) end = copyLine.length();
             String key = copyLine.substring(1, end);
             if (set.contains(key)) {
                 String value = ":"+key;

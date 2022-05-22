@@ -23,7 +23,10 @@ public class Print extends Setting implements Check, PrintWork {
     @Override
     public void start(String line, StringBuilder id) {
         /* --ㅅㅁㅅ 제거-- */
-        int start = line.indexOf(SPECIFIED) + SPECIFIED.length();
+        int start;
+        if (line.startsWith(SPECIFIED + " "))
+            start = line.indexOf(SPECIFIED)+SPECIFIED.length()+1;
+        else start = line.indexOf(SPECIFIED) + SPECIFIED.length();
         line = line.substring(start).trim();
         id.append(line);
     }
