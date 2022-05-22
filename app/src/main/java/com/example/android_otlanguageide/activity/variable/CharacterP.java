@@ -9,13 +9,17 @@ import com.example.android_otlanguageide.activity.item.KeyValueItem;
 import com.example.android_otlanguageide.activity.item.VariableWork;
 import com.example.android_otlanguageide.setting.Setting;
 
+import java.util.regex.Pattern;
+
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class CharacterP extends Setting implements Check, VariableWork {
     private static final String SPECIFIED = "ㅇㄱㅇ";
+    private final String patternText = "\\n\\s*ㅇㄱㅇ\\s|^\\s*ㅇㄱㅇ\\s";
+    private final Pattern pattern = Pattern.compile(patternText);
 
     @Override
     public boolean check(String line) {
-        return line.trim().startsWith(SPECIFIED);
+        return pattern.matcher(line).find();
     }
 
     @Override
