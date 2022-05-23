@@ -22,7 +22,10 @@ public class Running extends Setting {
         //동작을 실행하는 쓰레드
         new Thread(() -> {
             for (String line : lines) {
+                line = line + " ";
                 if (binding.stop.getVisibility() == View.GONE) break;
+                // 변수가 존재할때 변수사용
+                // scanner 존재할때 scanner 동작함
                 if (variable.check(line)) line = variable.getVar(line);
                 if (scannerP.check(line)) {
                     line = scannerP.start(line);
@@ -47,6 +50,7 @@ public class Running extends Setting {
 
     private void work(String line) {
         if (line != null && !line.isEmpty()) {
+            line = line.trim();
             if (print.check(line)) print.start(line, totalStringBuilder);
             else if (println.check(line)) println.start(line, totalStringBuilder);
             else if (booleanP.check(line)) booleanP.start(line);

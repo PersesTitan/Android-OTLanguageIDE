@@ -6,7 +6,7 @@ import androidx.annotation.RequiresApi;
 
 import com.example.android_otlanguageide.activity.item.Check;
 import com.example.android_otlanguageide.activity.item.KeyValueItem;
-import com.example.android_otlanguageide.activity.item.VariableWork;
+import com.example.android_otlanguageide.activity.item.work.VariableWork;
 import com.example.android_otlanguageide.setting.Setting;
 
 import java.util.regex.Pattern;

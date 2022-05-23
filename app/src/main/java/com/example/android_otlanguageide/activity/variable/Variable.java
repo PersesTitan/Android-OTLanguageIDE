@@ -42,7 +42,7 @@ public class Variable extends Setting implements Check {
             if (end == -1) end = copyLine.length();
             String key = copyLine.substring(1, end);
             if (set.contains(key)) {
-                String value = ":"+key;
+                String value = ":"+key+" ";
                 line = line.replaceFirst(value, checkValue(key));
             }
             count++;

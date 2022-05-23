@@ -1,4 +1,4 @@
-package com.example.android_otlanguageide.activity.item;
+package com.example.android_otlanguageide.activity.item.work;
 
 public interface VariableWork {
     void start(String line) throws Exception;

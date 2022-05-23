@@ -1,16 +1,12 @@
 package com.example.android_otlanguageide.activity.variable;
 
 import android.os.Build;
-import android.service.autofill.FieldClassification;
-import android.text.Spannable;
-import android.text.SpannableStringBuilder;
-import android.view.View;
 
 import androidx.annotation.RequiresApi;
 
 import com.example.android_otlanguageide.activity.item.Check;
 import com.example.android_otlanguageide.activity.item.KeyValueItem;
-import com.example.android_otlanguageide.activity.item.VariableWork;
+import com.example.android_otlanguageide.activity.item.work.VariableWork;
 import com.example.android_otlanguageide.setting.Setting;
 
 import java.util.regex.Pattern;
