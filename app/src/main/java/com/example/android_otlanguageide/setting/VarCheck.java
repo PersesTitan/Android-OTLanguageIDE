@@ -6,10 +6,12 @@ import androidx.annotation.RequiresApi;
 
 import com.example.android_otlanguageide.activity.item.VarType;
 
+import org.jetbrains.annotations.NotNull;
+
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class VarCheck {
 
-    public boolean check(String line, VarType varType) {
+    public boolean check(@NotNull String line,@NotNull VarType varType) {
         if (varType.equals(VarType.Boolean)) return isBoolean(line);
         else if (varType.equals(VarType.Character)) return isCharacter(line);
         else if (varType.equals(VarType.Double)) return isDouble(line);
